@@ -1,6 +1,9 @@
 const filterButtons = document.querySelectorAll(".filter-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
+const heroSessionImage = document.querySelector("#hero-session-image");
+const heroSessionTitle = document.querySelector("#hero-session-title");
+const heroSessionSubtitle = document.querySelector("#hero-session-subtitle");
 const AUDIO_LOOP_WINDOW_SECONDS = 2 * 60 * 60;
 
 let activeFilter = "all";
@@ -83,11 +86,31 @@ function bindAudioLoops() {
   audioPlayers.forEach(setupTimedAudioLoop);
 }
 
+function updateHeroSession(sessions) {
+  if (!heroSessionImage || !heroSessionTitle || !heroSessionSubtitle) {
+    return;
+  }
+
+  const latestSession = sessions[0];
+  if (!latestSession) {
+    return;
+  }
+
+  if (latestSession.posterPath) {
+    heroSessionImage.src = latestSession.posterPath;
+  }
+  heroSessionImage.alt = `${latestSession.title} cover`;
+  heroSessionTitle.textContent = latestSession.title || "Tonight's Session";
+  heroSessionSubtitle.textContent = latestSession.subtitle || latestSession.description || "A gentle session for tonight.";
+}
+
 function renderSessions(sessions) {
 const normalizedSessions = sessions.filter((session) => {
   const mediaPath = String(session.mediaPath || "").toLowerCase();
   return session.kind === "audio" && mediaPath.endsWith(".mp3");
 });
+
+  updateHeroSession(normalizedSessions);
 
   const filteredSessions = normalizedSessions.filter((session) => {
     return activeFilter === "all" || session.kind === activeFilter;
