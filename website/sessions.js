@@ -1,0 +1,19 @@
+window.SESSION_LIBRARY = {
+  "updated_at": "2026-03-19T21:58:21",
+  "session_count": 1,
+  "sessions": [
+    {
+      "slug": "2026-03-19-still-waters-at-night-2",
+      "date": "2026-03-19",
+      "title": "Still Waters At Night",
+      "subtitle": "A gentle guided meditation to help your body relax and your mind soften into sleep.",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A gentle guided meditation to help your body relax and your mind soften into sleep. Best played in a quiet room while your breathing and body gradually soften.",
+      "mediaPath": "../output/2026-03-19-still-waters-at-night-2/voiceover.mp3",
+      "posterPath": "../output/2026-03-19-still-waters-at-night-2/cover.svg",
+      "coverTheme": "warm-cover"
+    }
+  ]
+};

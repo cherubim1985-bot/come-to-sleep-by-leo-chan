@@ -1,0 +1,115 @@
+[
+  {
+    "name": "Still Waters at Night",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A voice-led night practice for deep unwinding and sleep",
+    "music_tags": [
+      "sleep",
+      "night",
+      "soft",
+      "ambient"
+    ],
+    "practice_preferences": [],
+    "image_keywords": [
+      "soft moonlight",
+      "quiet room",
+      "linen",
+      "midnight blue"
+    ],
+    "opening": "If you are here tonight because your body is tired but your mind is still awake, stay with me for a while.",
+    "body_focus": "Let your attention rest on the body first, then on the breath, and let each exhale soften what the day has left behind.",
+    "closing": "If sleep is close now, let it come without effort. If you are still awake, stay with the softness. Rest is already beginning."
+  },
+  {
+    "name": "夜间安睡",
+    "category": "Sleep Meditation",
+    "subtitle": "让心慢慢放下，让身体慢慢沉入安稳",
+    "music_tags": [
+      "sleep",
+      "night",
+      "soft",
+      "ambient"
+    ],
+    "practice_preferences": [
+      "身体扫描",
+      "瑜伽尼德拉",
+      "4-7-8 呼吸",
+      "慈心观"
+    ],
+    "image_keywords": [
+      "soft moonlight",
+      "quiet bedroom",
+      "linen",
+      "deep blue"
+    ],
+    "opening": "如果你已经躺好了，就让身体先不要再做任何努力。今晚不需要完成什么，只需要慢慢回到安静里。",
+    "body_focus": "把注意力轻轻带回呼吸，再带到脸、肩膀、胸口、腹部和双腿，让每一次呼气都像在把重量放下。",
+    "closing": "如果睡意已经靠近，就顺着它慢慢睡去。如果你还醒着，也没有关系，继续让呼吸陪着你。"
+  },
+  {
+    "name": "清晨安定",
+    "subtitle": "在一天开始前，让呼吸先安静下来",
+    "image_keywords": [
+      "sunrise lake",
+      "mist",
+      "soft gold",
+      "still water"
+    ],
+    "opening": "欢迎来到今天的冥想。请找一个舒服的位置坐下，轻轻闭上眼睛。",
+    "body_focus": "把注意力带回呼吸，感受吸气时胸口微微打开，呼气时身体慢慢放松。",
+    "closing": "当你准备好的时候，带着这一份安定，慢慢回到今天的生活里。"
+  },
+  {
+    "name": "深度放松",
+    "subtitle": "让紧绷的身体一点一点松开",
+    "image_keywords": [
+      "moonlit sea",
+      "deep blue",
+      "slow waves",
+      "minimal"
+    ],
+    "opening": "这一刻，不需要完成任何事。你只需要允许自己停下来。",
+    "body_focus": "从额头到肩膀，从胸口到腹部，再到双腿和双脚，依次松开每一处紧张。",
+    "closing": "把松弛的感觉记住，让它陪你进入接下来的夜晚或休息时间。"
+  },
+  {
+    "name": "睡前释放",
+    "subtitle": "把白天的杂念温柔放下",
+    "image_keywords": [
+      "night sky",
+      "stars",
+      "mountain silhouette",
+      "quiet"
+    ],
+    "opening": "如果你正在为睡眠做准备，请让身体更舒适一些，慢慢把注意力收回来。",
+    "body_focus": "每一次呼气，都想象把今天的疲惫、压力和思绪轻轻放下。",
+    "closing": "愿你在接下来的时间里，更轻、更稳，也更容易进入睡眠。"
+  },
+  {
+    "name": "情绪舒缓",
+    "subtitle": "给情绪一点空间，也给自己一点温柔",
+    "image_keywords": [
+      "forest light",
+      "green",
+      "gentle haze",
+      "peaceful path"
+    ],
+    "opening": "此刻不需要压抑情绪，也不需要立刻改变它，只是先陪伴自己。",
+    "body_focus": "感受情绪像潮水一样来去，而你只是在呼吸里稳稳地停留。",
+    "closing": "带着更柔软的心，继续今天剩下的路程。"
+  },
+  {
+    "name": "专注回归",
+    "subtitle": "把分散的注意力重新带回当下",
+    "image_keywords": [
+      "zen room",
+      "warm light",
+      "clean composition",
+      "calm"
+    ],
+    "opening": "如果你的思绪有些散乱，没有关系，我们现在一起把它轻轻带回来。",
+    "body_focus": "关注空气经过鼻尖的细微触感，把每一次呼吸当作回到当下的锚点。",
+    "closing": "愿你带着更清楚、更稳定的专注感，进入接下来的工作与生活。"
+  }
+]

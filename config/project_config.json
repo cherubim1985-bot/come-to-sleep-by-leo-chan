@@ -1,0 +1,86 @@
+{
+  "channel_name": "Daily Meditation",
+  "duration_mode": "random_range",
+  "default_duration_minutes": 20,
+  "duration_min_minutes": 15,
+  "duration_max_minutes": 30,
+  "script_style": "human_spoken",
+  "caption_segment_seconds": 12,
+  "chapter_minutes": 2,
+  "voice_clone": {
+    "provider": "volcengine_v1",
+    "voice_id": "replace-with-your-cloned-voice-id",
+    "speaker_name": "My Clone Voice",
+    "instructions": "温柔、稳定、慢速、贴近耳语但清晰。",
+    "api_key": "",
+    "model_id": "eleven_multilingual_v2",
+    "output_format": "mp3_44100_128",
+    "reference_audio": "1599 Ramblewood Ln 2.m4a",
+    "reference_transcript": "大家好,歡迎來到今天的明相時刻。現在請你找一個舒服的位置做下,輕輕閉上眼睛,慢慢把注意力帶回呼吸。每一次吸氣,感受空氣進入深入。",
+    "cosyvoice": {
+      "python_bin": "/tmp/cosyvoice-conda/bin/python",
+      "script_path": "tools/cosyvoice_runner.py",
+      "model_dir": "third_party/CosyVoice/pretrained_models/CosyVoice2-0.5B",
+      "repo_dir": "third_party/CosyVoice",
+      "temp_dir": "tmp/cosyvoice",
+      "max_chunk_chars": 120
+    },
+    "indextts": {
+      "python_bin": "third_party/index-tts/.venv/bin/python",
+      "script_path": "tools/indextts_runner.py",
+      "model_dir": "third_party/index-tts/checkpoints",
+      "config_path": "third_party/index-tts/checkpoints/config.yaml",
+      "repo_dir": "third_party/index-tts",
+      "temp_dir": "tmp/indextts",
+      "max_chunk_chars": 56,
+      "device": "cpu"
+    },
+    "volcengine": {
+      "app_id": "2960312071",
+      "access_key": "8Wua794fingmkj4_N1opuz4_xXdh0t2J",
+      "secret_key": "MzFqFmJ7sS8s6LwWfZjYvlgSqEthfc8T",
+      "speaker": "S_ElC9AeMW1",
+      "api_key": "5c2547a3-d1eb-4b35-abff-6b52fc0eed60",
+      "cluster": "volcano_icl",
+      "audio_format": "wav",
+      "sample_rate": 24000,
+      "speech_rate": 0,
+      "loudness_rate": 0,
+      "speed_ratio": 0.92,
+      "max_chunk_chars": 170,
+      "synth_url": "https://openspeech.bytedance.com/api/v1/tts",
+      "request_timeout_seconds": 1800
+    }
+  },
+  "music": {
+    "strategy": "voice_only",
+    "avoid_recent_repeats": 7,
+    "default_tags": [
+      "meditation",
+      "ambient",
+      "slow",
+      "instrumental"
+    ],
+    "fallback_audio": "0208 (1).MP3"
+  },
+  "music_generation": {
+    "provider": "manual",
+    "endpoint": "https://example.com/generate-music",
+    "method": "POST",
+    "auth_header": "",
+    "timeout_seconds": 120,
+    "download_field": "audio_url",
+    "base64_field": "audio_base64",
+    "filename_field": "filename",
+    "extra_payload": {}
+  },
+  "image_generation": {
+    "provider": "manual",
+    "api_key": "",
+    "model": "gpt-image-1",
+    "size": "1536x1024",
+    "quality": "high",
+    "background": "opaque",
+    "output_format": "png"
+  }
+}
