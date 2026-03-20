@@ -2450,8 +2450,29 @@ def infer_subtitle_from_title(title: str) -> str:
     return "A gentle guided meditation to help your body relax and your mind soften into sleep."
 
 
-def build_session_description(title: str, subtitle: str, traditions: list[dict], kind: str) -> str:
+def build_session_subtitle(title: str, manifest: dict) -> str:
+    manifest_subtitle = str(manifest.get("subtitle", "")).strip()
+    if manifest_subtitle:
+        return manifest_subtitle
+    return infer_subtitle_from_title(title)
+
+
+def build_session_description(title: str, subtitle: str, traditions: list[dict], kind: str, manifest: dict | None = None) -> str:
+    manifest = manifest or {}
     tradition_names = [str(item.get("name", "")).strip() for item in traditions if str(item.get("name", "")).strip()]
+    lowered_title = title.lower()
+
+    if "quiet room" in lowered_title:
+        return (
+            "A quieter, more spacious sleep session for nights that feel mentally full. "
+            "Built around simple presence and a softer, Zen-shaped way of letting thought pass without following it."
+        )
+    if "still waters" in lowered_title:
+        return (
+            "A deeply unwinding sleep meditation with a steady human voice, slower exhales, and long settling pauses. "
+            "Made for nights when the body is tired but the mind is still gently moving."
+        )
+
     if tradition_names:
         joined = ", ".join(tradition_names[:3])
         if kind == "video":
@@ -2474,10 +2495,10 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
         if only_bundle_names and bundle_dir.name not in only_bundle_names:
             continue
         title = infer_title_from_bundle_dir(bundle_dir)
-        subtitle = infer_subtitle_from_title(title)
         manifest = load_json(bundle_dir / "bundle_manifest.json", {})
         if not is_modern_voice_only_bundle(bundle_dir, manifest):
             continue
+        subtitle = build_session_subtitle(title, manifest)
         media_name, poster_name, kind = infer_media_paths(bundle_dir, manifest)
         if not media_name:
             continue
@@ -2504,7 +2525,7 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
                 "kind": "audio",
                 "kindLabel": "Audio Session",
                 "meta": " · ".join(meta_parts),
-                "description": build_session_description(title, subtitle, [], "audio"),
+                "description": build_session_description(title, subtitle, [], "audio", manifest),
                 "mediaPath": f"../output/{bundle_dir.name}/{parse.quote(media_name)}",
                 "posterPath": f"../output/{bundle_dir.name}/{parse.quote(poster_name)}" if poster_name else None,
                 "coverTheme": pick_cover_theme(title),
