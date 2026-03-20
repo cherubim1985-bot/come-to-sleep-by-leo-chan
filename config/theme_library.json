@@ -22,6 +22,30 @@
     "closing": "If sleep is close now, let it come without effort. If you are still awake, stay with the softness. Rest is already beginning."
   },
   {
+    "name": "The Quiet Room",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A still, voice-led night practice shaped by simple presence and soft breath",
+    "music_tags": [
+      "sleep",
+      "night",
+      "still",
+      "minimal"
+    ],
+    "practice_preferences": [
+      "禅宗观照"
+    ],
+    "image_keywords": [
+      "paper lantern glow",
+      "quiet room",
+      "moonlit wood",
+      "deep stillness"
+    ],
+    "opening": "If tonight feels a little too full, stay here with me and let the room grow quieter around you.",
+    "body_focus": "Notice the simple fact of the body resting here, breathing by itself, needing nothing extra from you right now.",
+    "closing": "If sleep comes, let it come softly. If you are still awake, remain here a little longer in the quiet."
+  },
+  {
     "name": "夜间安睡",
     "category": "Sleep Meditation",
     "subtitle": "让心慢慢放下，让身体慢慢沉入安稳",

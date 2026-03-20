@@ -1016,6 +1016,16 @@ def build_english_sleep_script(
     selected_companion = choose_many(companion_lines, 4, "companion")
     rotating_breaths = choose_many(breath_lines, len(breath_lines), "breath")
     rotating_reassurance = choose_many(reassurance_lines, len(reassurance_lines), "reassurance")
+    practice_preferences = {str(item).strip().lower() for item in theme.get("practice_preferences", [])}
+    is_zen_theme = bool(
+        {"禅宗观照", "zen", "zen sitting", "shikantaza"} & practice_preferences
+    )
+    zen_lines = [
+        "For now, nothing needs to be changed. Let this moment be exactly as it is, and let that be enough.",
+        "You do not have to chase away thought. Simply notice it, and let it pass without following it anywhere.",
+        "Sit inwardly with the night the way you might sit beside a quiet window, not asking for anything, only keeping company.",
+        "Awake or half asleep, you can remain simple here, breathing, resting, letting the mind widen instead of tighten.",
+    ]
 
     lines_with_pause: list[tuple[str, int]] = [
         (theme["opening"], 7200),
@@ -1033,6 +1043,8 @@ def build_english_sleep_script(
     lines_with_pause.append((rotating_breaths[0], 11200))
     lines_with_pause.append((rotating_reassurance[0], 9600))
     lines_with_pause.append((selected_imagery[0], 12200))
+    if is_zen_theme:
+        lines_with_pause.append((zen_lines[0], 11400))
 
     for index in range(drift_cycles):
         lines_with_pause.append((rotating_breaths[(index + 1) % len(rotating_breaths)], 10800))
@@ -1043,6 +1055,9 @@ def build_english_sleep_script(
         if index in {2, 6}:
             companion_index = min(index // 2 - 1, len(selected_companion) - 1)
             lines_with_pause.append((selected_companion[companion_index], 11000))
+        if is_zen_theme and index in {1, 4, 7}:
+            zen_index = min(index // 3 + 1, len(zen_lines) - 1)
+            lines_with_pause.append((zen_lines[zen_index], 11600))
         if index == max(2, drift_cycles // 2):
             lines_with_pause.append(("Notice how the body may already be a little farther away from the day than when we began.", 10400))
             lines_with_pause.append(("You do not need to check whether it is working. Checking wakes the mind back up. Let not knowing be part of the rest.", 11800))
