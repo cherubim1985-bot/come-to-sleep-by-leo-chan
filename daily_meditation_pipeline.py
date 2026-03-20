@@ -2389,6 +2389,19 @@ def infer_media_paths(bundle_dir: Path, manifest: dict) -> tuple[str | None, str
     return audio_name, poster_name, "audio"
 
 
+def is_modern_voice_only_bundle(bundle_dir: Path, manifest: dict) -> bool:
+    files = manifest.get("files", {}) if isinstance(manifest.get("files"), dict) else {}
+    raw_voice_mp3 = files.get("voice_audio_mp3")
+    raw_final_mix = files.get("final_audio_mix")
+    voice_mp3 = "" if raw_voice_mp3 is None else str(raw_voice_mp3).strip().lower()
+    final_mix = "" if raw_final_mix is None else str(raw_final_mix).strip().lower()
+    raw_music_source = manifest.get("music_source")
+    music_source = "" if raw_music_source is None else str(raw_music_source).strip()
+    if voice_mp3 == "voiceover.mp3" and not final_mix and not music_source:
+        return True
+    return False
+
+
 def pick_cover_theme(title: str) -> str:
     lowered = title.lower()
     if "雨" in title:
@@ -2463,6 +2476,8 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
         title = infer_title_from_bundle_dir(bundle_dir)
         subtitle = infer_subtitle_from_title(title)
         manifest = load_json(bundle_dir / "bundle_manifest.json", {})
+        if not is_modern_voice_only_bundle(bundle_dir, manifest):
+            continue
         media_name, poster_name, kind = infer_media_paths(bundle_dir, manifest)
         if not media_name:
             continue
