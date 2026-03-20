@@ -5,23 +5,11 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT_DIR"
 
 if [[ $# -eq 0 ]]; then
-  echo "Usage: ./publish_sleep_site.sh --theme-name 'Still Waters at Night' --duration-minutes 23 [--date YYYY-MM-DD]"
+  echo "Usage: ./publish_sleep_site.sh --theme-name 'Still Waters at Night' --duration-minutes 23 [--date YYYY-MM-DD] [--website-single-latest]"
   exit 1
 fi
 
 PIPELINE_ARGS=("$@")
-HAS_SINGLE_LATEST=0
-
-for arg in "${PIPELINE_ARGS[@]}"; do
-  if [[ "$arg" == "--website-single-latest" ]]; then
-    HAS_SINGLE_LATEST=1
-    break
-  fi
-done
-
-if [[ $HAS_SINGLE_LATEST -eq 0 ]]; then
-  PIPELINE_ARGS+=("--website-single-latest")
-fi
 
 echo "Generating latest session and refreshing Netlify publish directory..."
 python3 "$ROOT_DIR/daily_meditation_pipeline.py" "${PIPELINE_ARGS[@]}"
