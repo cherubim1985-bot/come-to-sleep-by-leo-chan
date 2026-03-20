@@ -222,6 +222,16 @@ h3 {
   object-fit: cover;
 }
 
+.hero-media-copy {
+  padding: 18px 18px 20px;
+}
+
+.hero-media-copy audio {
+  width: 100%;
+  margin-top: 16px;
+  filter: sepia(0.08) saturate(0.88) brightness(0.96);
+}
+
 .hero-media-copy,
 .featured-copy {
   padding: 18px 18px 20px;

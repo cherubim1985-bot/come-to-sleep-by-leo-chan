@@ -4,6 +4,8 @@ const libraryStatus = document.querySelector("#library-status");
 const heroSessionImage = document.querySelector("#hero-session-image");
 const heroSessionTitle = document.querySelector("#hero-session-title");
 const heroSessionSubtitle = document.querySelector("#hero-session-subtitle");
+const heroSessionAudio = document.querySelector("#hero-session-audio");
+const heroSessionSource = document.querySelector("#hero-session-source");
 const AUDIO_LOOP_WINDOW_SECONDS = 2 * 60 * 60;
 
 let activeFilter = "all";
@@ -82,6 +84,9 @@ function setupTimedAudioLoop(audio) {
 }
 
 function bindAudioLoops() {
+  if (heroSessionAudio) {
+    setupTimedAudioLoop(heroSessionAudio);
+  }
   const audioPlayers = sessionGrid.querySelectorAll("audio[data-loop-window-seconds]");
   audioPlayers.forEach(setupTimedAudioLoop);
 }
@@ -102,6 +107,10 @@ function updateHeroSession(sessions) {
   heroSessionImage.alt = `${latestSession.title} cover`;
   heroSessionTitle.textContent = latestSession.title || "Tonight's Session";
   heroSessionSubtitle.textContent = latestSession.subtitle || latestSession.description || "A gentle session for tonight.";
+  if (heroSessionAudio && heroSessionSource && latestSession.mediaPath) {
+    heroSessionSource.src = latestSession.mediaPath;
+    heroSessionAudio.load();
+  }
 }
 
 function renderSessions(sessions) {
