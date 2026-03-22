@@ -1,6 +1,6 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-03-22T04:39:30",
-  "session_count": 1,
+  "updated_at": "2026-03-22T05:00:00",
+  "session_count": 3,
   "sessions": [
     {
       "slug": "2026-03-21-the-empty-boat-2",
@@ -13,6 +13,32 @@ window.SESSION_LIBRARY = {
       "description": "A voice-only night drift for letting thoughts pass and settling into unforced sleep Best played in a quiet room while your breathing and body gradually soften.",
       "mediaPath": "./output/2026-03-21-the-empty-boat-2/voiceover.mp3",
       "posterPath": "./output/2026-03-21-the-empty-boat-2/cover.svg",
+      "coverTheme": "warm-cover"
+    },
+    {
+      "slug": "2026-03-19-the-quiet-room",
+      "date": "2026-03-19",
+      "title": "The Quiet Room",
+      "subtitle": "A still, voice-led night practice shaped by simple presence and soft breath",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A quieter, more spacious sleep session for nights that feel mentally full. Built around simple presence and a softer, Zen-shaped way of letting thought pass without following it.",
+      "mediaPath": "./output/2026-03-19-the-quiet-room/voiceover.mp3",
+      "posterPath": "./output/2026-03-19-the-quiet-room/cover.svg",
+      "coverTheme": "warm-cover"
+    },
+    {
+      "slug": "2026-03-19-still-waters-at-night-2",
+      "date": "2026-03-19",
+      "title": "Still Waters At Night",
+      "subtitle": "A voice-led night practice for deep unwinding and sleep",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A deeply unwinding sleep meditation with a steady human voice, slower exhales, and long settling pauses. Made for nights when the body is tired but the mind is still gently moving.",
+      "mediaPath": "./output/2026-03-19-still-waters-at-night-2/voiceover.mp3",
+      "posterPath": "./output/2026-03-19-still-waters-at-night-2/cover.svg",
       "coverTheme": "warm-cover"
     }
   ]
