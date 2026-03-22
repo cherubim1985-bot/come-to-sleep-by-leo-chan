@@ -58,6 +58,13 @@ DEFAULT_CONFIG = {
             "max_chunk_chars": 56,
             "device": "cpu",
         },
+        "say": {
+            "voice": "Samantha",
+            "rate": 115,
+            "sample_rate": 24000,
+            "channels": 1,
+            "max_chunk_chars": 220,
+        },
         "volcengine": {
             "app_id": "",
             "access_key": "",
@@ -2033,6 +2040,127 @@ def generate_voice_via_indextts(bundle_dir: Path, config: dict, voice_request: d
         )
 
 
+def generate_voice_via_say(bundle_dir: Path, config: dict, voice_request: dict) -> GeneratedAssetResult:
+    voice = config.get("voice_clone", {})
+    say_config = voice.get("say", {})
+    say_bin = shutil.which("say")
+    if not say_bin:
+        return GeneratedAssetResult(
+            provider="say_local",
+            status="skipped",
+            request_payload=voice_request,
+            output_file=None,
+            source_url=None,
+            message="找不到 macOS say 命令。",
+        )
+
+    voice_name = str(say_config.get("voice", "Samantha")).strip() or "Samantha"
+    rate = max(80, int(say_config.get("rate", 115)))
+    sample_rate = max(8000, int(say_config.get("sample_rate", 24000)))
+    channels = max(1, int(say_config.get("channels", 1)))
+    max_chunk_chars = max(40, int(say_config.get("max_chunk_chars", 220)))
+
+    raw_blocks = voice_request.get("spoken_blocks") if isinstance(voice_request.get("spoken_blocks"), list) else []
+    blocks = explode_spoken_blocks(raw_blocks, max_chunk_chars) if raw_blocks else [
+        {"text": text, "pause_after_ms": 0} for text in split_voice_text(str(voice_request["text"]), max_chunk_chars)
+    ]
+    if not blocks:
+        return GeneratedAssetResult(
+            provider="say_local",
+            status="failed",
+            request_payload={"voice": voice_name, "rate": rate},
+            output_file=None,
+            source_url=None,
+            message="没有可用于本地 say 生成的文本片段。",
+        )
+
+    output_path = bundle_dir / Path(voice_request["expected_output_file"]).with_suffix(".wav").name
+    segment_dir = bundle_dir / "voice_segments"
+    segment_dir.mkdir(parents=True, exist_ok=True)
+    segment_files: list[Path] = []
+    response_meta: list[dict] = []
+    params_signature: tuple[int, int, int, str] | None = None
+
+    try:
+        for index, block in enumerate(blocks, start=1):
+            text = str(block.get("text", "")).strip()
+            pause_after_ms = max(0, int(block.get("pause_after_ms", 0)))
+            if not text:
+                continue
+
+            aiff_path = segment_dir / f"segment_{index:03d}.aiff"
+            wav_path = segment_dir / f"segment_{index:03d}.wav"
+            subprocess.run(
+                [say_bin, "-v", voice_name, "-r", str(rate), "-o", str(aiff_path), text],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            convert_audio_with_afconvert(
+                aiff_path,
+                wav_path,
+                file_format="WAVE",
+                data_format="LEI16",
+                sample_rate=sample_rate,
+                channels=channels,
+            )
+            segment_files.append(wav_path)
+            with wave.open(str(wav_path), "rb") as generated_wav:
+                params_signature = (
+                    generated_wav.getnchannels(),
+                    generated_wav.getsampwidth(),
+                    generated_wav.getframerate(),
+                    generated_wav.getcomptype(),
+                )
+            if pause_after_ms > 0:
+                pause_path = segment_dir / f"segment_{index:03d}_pause.wav"
+                nchannels, sampwidth, framerate, _ = params_signature or (channels, 2, sample_rate, "NONE")
+                write_silence_wav(
+                    pause_path,
+                    pause_after_ms,
+                    nchannels=nchannels,
+                    sampwidth=sampwidth,
+                    framerate=framerate,
+                )
+                segment_files.append(pause_path)
+            response_meta.append(
+                {
+                    "index": index,
+                    "text": text,
+                    "output_file": wav_path.name,
+                    "pause_after_ms": pause_after_ms,
+                }
+            )
+
+        concatenate_wav_files(segment_files, output_path)
+        return GeneratedAssetResult(
+            provider="say_local",
+            status="generated",
+            request_payload={
+                "voice": voice_name,
+                "rate": rate,
+                "chunk_count": len(response_meta),
+                "chunks": response_meta,
+            },
+            output_file=output_path.name,
+            source_url=None,
+            message=f"已通过 macOS say 本地生成旁白，共 {len(response_meta)} 段。",
+        )
+    except (subprocess.CalledProcessError, wave.Error, OSError) as exc:
+        return GeneratedAssetResult(
+            provider="say_local",
+            status="failed",
+            request_payload={
+                "voice": voice_name,
+                "rate": rate,
+                "chunk_count": len(blocks),
+            },
+            output_file=None,
+            source_url=None,
+            message=f"macOS say 本地生成失败：{exc}",
+        )
+
+
 def maybe_generate_voice(bundle_dir: Path, config: dict, voice_request: dict) -> GeneratedAssetResult:
     provider = str(config.get("voice_clone", {}).get("provider", "manual")).strip().lower()
     if provider == "elevenlabs":
@@ -2043,6 +2171,8 @@ def maybe_generate_voice(bundle_dir: Path, config: dict, voice_request: dict) ->
         return generate_voice_via_cosyvoice(bundle_dir, config, voice_request)
     if provider == "indextts_local":
         return generate_voice_via_indextts(bundle_dir, config, voice_request)
+    if provider == "say_local":
+        return generate_voice_via_say(bundle_dir, config, voice_request)
     return GeneratedAssetResult(
         provider=provider or "manual",
         status="manual",

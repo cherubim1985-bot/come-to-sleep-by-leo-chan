@@ -11,6 +11,7 @@ Recommended Netlify setup:
 - Publish directory: deploy/netlify-site
 
 Current bundles included:
+- 2026-03-21-the-empty-boat-2
 
 Important:
 - Replace `hello@example.com` before public launch.
