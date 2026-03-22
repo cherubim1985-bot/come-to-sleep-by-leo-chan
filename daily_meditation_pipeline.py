@@ -2104,6 +2104,11 @@ def generate_voice_via_say(bundle_dir: Path, config: dict, voice_request: dict) 
                 sample_rate=sample_rate,
                 channels=channels,
             )
+            segment_duration = safe_get_audio_duration(wav_path)
+            if segment_duration is None or segment_duration <= 0.05:
+                raise ValueError(
+                    f"macOS say generated an empty audio segment for chunk {index}: {text[:80]}"
+                )
             segment_files.append(wav_path)
             with wave.open(str(wav_path), "rb") as generated_wav:
                 params_signature = (
@@ -2146,7 +2151,7 @@ def generate_voice_via_say(bundle_dir: Path, config: dict, voice_request: dict) 
             source_url=None,
             message=f"已通过 macOS say 本地生成旁白，共 {len(response_meta)} 段。",
         )
-    except (subprocess.CalledProcessError, wave.Error, OSError) as exc:
+    except (subprocess.CalledProcessError, ValueError, wave.Error, OSError) as exc:
         return GeneratedAssetResult(
             provider="say_local",
             status="failed",
