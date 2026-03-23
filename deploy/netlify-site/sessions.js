@@ -1,7 +1,22 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-03-22T22:00:56",
-  "session_count": 3,
+  "updated_at": "2026-03-22T22:08:45",
+  "session_count": 4,
   "sessions": [
+    {
+      "slug": "2026-03-22-the-empty-boat-2",
+      "date": "2026-03-22",
+      "title": "The Empty Boat",
+      "subtitle": "A voice-only night drift for letting thoughts pass and settling into unforced sleep",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A voice-only night drift for letting thoughts pass and settling into unforced sleep Best played in a quiet room while your breathing and body gradually soften.",
+      "mediaPath": "./output/2026-03-22-the-empty-boat-2/voiceover.mp3",
+      "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-22-the-empty-boat-2/voiceover.mp3",
+      "posterPath": "./output/2026-03-22-the-empty-boat-2/cover.svg",
+      "publicPosterPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-22-the-empty-boat-2/cover.svg",
+      "coverTheme": "warm-cover"
+    },
     {
       "slug": "2026-03-22-after-the-mind-lets-go-3",
       "date": "2026-03-22",
