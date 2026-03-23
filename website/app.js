@@ -7,8 +7,40 @@ const heroSessionSubtitle = document.querySelector("#hero-session-subtitle");
 const heroSessionAudio = document.querySelector("#hero-session-audio");
 const heroSessionSource = document.querySelector("#hero-session-source");
 const AUDIO_LOOP_WINDOW_SECONDS = 2 * 60 * 60;
+const SITE_CONFIG = window.SITE_CONFIG || {};
+const GA_MEASUREMENT_ID = String(SITE_CONFIG.gaMeasurementId || "").trim();
 
 let activeFilter = "all";
+let gaReady = false;
+
+function loadGa4() {
+  if (!GA_MEASUREMENT_ID || gaReady) {
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
+  document.head.appendChild(script);
+
+  window.gtag("js", new Date());
+  window.gtag("config", GA_MEASUREMENT_ID);
+  gaReady = true;
+}
+
+function trackEvent(eventName, params = {}) {
+  if (!GA_MEASUREMENT_ID) {
+    return;
+  }
+
+  loadGa4();
+  window.gtag("event", eventName, params);
+}
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => {
@@ -34,7 +66,15 @@ function renderMedia(session) {
 
   if (session.kind === "audio" && session.mediaPath) {
     return `
-      <audio controls preload="metadata" data-loop-window-seconds="${AUDIO_LOOP_WINDOW_SECONDS}">
+      <audio
+        controls
+        preload="metadata"
+        data-loop-window-seconds="${AUDIO_LOOP_WINDOW_SECONDS}"
+        data-session-slug="${escapeHtml(session.slug || "")}"
+        data-session-title="${escapeHtml(session.title || "")}"
+        data-session-meta="${escapeHtml(session.meta || "")}"
+        data-source-section="library"
+      >
         <source src="${escapeHtml(session.mediaPath)}" type="audio/mpeg" />
       </audio>
     `;
@@ -52,8 +92,23 @@ function setupTimedAudioLoop(audio) {
 
   const loopWindowSeconds = Number(audio.dataset.loopWindowSeconds || AUDIO_LOOP_WINDOW_SECONDS);
 
+  const ensurePlaybackSession = () => {
+    if (!audio.dataset.playbackSessionId) {
+      audio.dataset.playbackSessionId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      audio.dataset.startTracked = "";
+      audio.dataset.thirtyTracked = "";
+      audio.dataset.completeTracked = "";
+      audio.dataset.pauseTrackedAt = "";
+    }
+  };
+
   const resetLoopSession = () => {
     audio.dataset.loopStartedAt = "";
+    audio.dataset.playbackSessionId = "";
+    audio.dataset.startTracked = "";
+    audio.dataset.thirtyTracked = "";
+    audio.dataset.completeTracked = "";
+    audio.dataset.pauseTrackedAt = "";
   };
 
   const markLoopSessionStarted = () => {
@@ -63,7 +118,70 @@ function setupTimedAudioLoop(audio) {
   };
 
   audio.addEventListener("play", () => {
+    ensurePlaybackSession();
     markLoopSessionStarted();
+
+    if (audio.dataset.startTracked === "true") {
+      return;
+    }
+
+    const durationSeconds = Number.isFinite(audio.duration) ? Math.round(audio.duration) : undefined;
+    trackEvent("audio_play_start", {
+      session_slug: audio.dataset.sessionSlug || "",
+      session_title: audio.dataset.sessionTitle || "",
+      session_category: audio.dataset.sessionMeta || "",
+      source_section: audio.dataset.sourceSection || "",
+      duration_seconds: durationSeconds,
+    });
+    audio.dataset.startTracked = "true";
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    ensurePlaybackSession();
+
+    if (audio.dataset.thirtyTracked !== "true" && audio.currentTime >= 30) {
+      trackEvent("audio_30_seconds", {
+        session_slug: audio.dataset.sessionSlug || "",
+        session_title: audio.dataset.sessionTitle || "",
+        source_section: audio.dataset.sourceSection || "",
+        listened_seconds: 30,
+      });
+      audio.dataset.thirtyTracked = "true";
+    }
+
+    const durationSeconds = Number.isFinite(audio.duration) ? audio.duration : 0;
+    if (
+      durationSeconds > 0 &&
+      audio.dataset.completeTracked !== "true" &&
+      audio.currentTime >= Math.max(durationSeconds - 1, durationSeconds * 0.98)
+    ) {
+      trackEvent("audio_complete", {
+        session_slug: audio.dataset.sessionSlug || "",
+        session_title: audio.dataset.sessionTitle || "",
+        source_section: audio.dataset.sourceSection || "",
+        duration_seconds: Math.round(durationSeconds),
+      });
+      audio.dataset.completeTracked = "true";
+    }
+  });
+
+  audio.addEventListener("pause", () => {
+    if (!audio.dataset.playbackSessionId) {
+      return;
+    }
+
+    const currentSecond = Math.round(audio.currentTime || 0);
+    if (audio.dataset.pauseTrackedAt === String(currentSecond)) {
+      return;
+    }
+
+    trackEvent("audio_pause", {
+      session_slug: audio.dataset.sessionSlug || "",
+      session_title: audio.dataset.sessionTitle || "",
+      source_section: audio.dataset.sourceSection || "",
+      pause_second: currentSecond,
+    });
+    audio.dataset.pauseTrackedAt = String(currentSecond);
   });
 
   audio.addEventListener("ended", () => {
@@ -108,6 +226,10 @@ function updateHeroSession(sessions) {
   heroSessionTitle.textContent = latestSession.title || "Tonight's Session";
   heroSessionSubtitle.textContent = latestSession.subtitle || latestSession.description || "A gentle session for tonight.";
   if (heroSessionAudio && heroSessionSource && latestSession.mediaPath) {
+    heroSessionAudio.dataset.sessionSlug = latestSession.slug || "";
+    heroSessionAudio.dataset.sessionTitle = latestSession.title || "";
+    heroSessionAudio.dataset.sessionMeta = latestSession.meta || "";
+    heroSessionAudio.dataset.sourceSection = "hero";
     heroSessionSource.src = latestSession.mediaPath;
     heroSessionAudio.load();
   }
