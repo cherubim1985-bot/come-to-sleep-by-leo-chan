@@ -2332,9 +2332,12 @@ def write_bundle(
     captions = build_srt(script["full_text"], segment_seconds)
     cover_svg = build_svg(script["title"], script["subtitle"], theme)
     voice_request = build_voice_request(config, script, voice_filename)
+    promo_pack = build_promo_pack(script, theme, bundle_dir.name)
 
     (bundle_dir / "script.json").write_text(json.dumps(script, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (bundle_dir / "voiceover_script.txt").write_text(script["full_text"] + "\n", encoding="utf-8")
+    (bundle_dir / "promo_pack.json").write_text(json.dumps(promo_pack, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (bundle_dir / "promo_pack.md").write_text(render_promo_pack_markdown(promo_pack), encoding="utf-8")
     (bundle_dir / "captions.srt").write_text(captions, encoding="utf-8")
     (bundle_dir / "image_prompt.txt").write_text(image_prompt + "\n", encoding="utf-8")
     (bundle_dir / "image_request.json").write_text(json.dumps(image_request, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -2458,6 +2461,8 @@ def write_bundle(
             "music_request": "music_request.json",
             "music_generation_result": "music_generation_result.json",
             "voice_script": "voiceover_script.txt",
+            "promo_pack_json": "promo_pack.json",
+            "promo_pack_markdown": "promo_pack.md",
             "voice_request": "voiceover_request.json",
             "voice_generation_result": "voice_generation_result.json",
             "voice_audio_expected": generated_voice.output_file or voice_filename,
@@ -2626,6 +2631,92 @@ def build_session_description(title: str, subtitle: str, traditions: list[dict],
     if kind == "video":
         return f"{subtitle} Best for slowing down before bed through image, sound, and steady pacing."
     return f"{subtitle} Best played in a quiet room while your breathing and body gradually soften."
+
+
+def build_promo_pack(script: dict, theme: dict, bundle_name: str) -> dict:
+    title = str(script.get("title", "")).strip() or "Sleep Session"
+    subtitle = str(script.get("subtitle", "")).strip()
+    description = build_session_description(title, subtitle, [], "audio", theme)
+    full_text = str(script.get("full_text", "")).strip()
+    lines = [line.strip() for line in full_text.splitlines() if line.strip()]
+    clip_quote = lines[0] if lines else subtitle
+    secondary_quote = lines[min(3, len(lines) - 1)] if lines else subtitle
+    site_name = "come to sleep by Leo Chan"
+    landing_page = "https://come-to-sleep-by-leo-chan.pages.dev/"
+
+    hooks = [
+        "if your mind won't let go tonight, stay here with me",
+        "for nights when sleep feels close, but the mind keeps moving",
+        "voice-only sleep support for tender, overthinking nights",
+    ]
+    if "empty boat" in title.lower():
+        hooks = [
+            "if your thoughts keep drifting tonight, let them pass without following them",
+            "for nights when you need less effort, less pressure, and a quieter way to rest",
+            "a voice-only sleep session for letting the mind drift like an empty boat",
+        ]
+
+    short_video_outline = [
+        {"timestamp": "0-2s", "text": hooks[0]},
+        {"timestamp": "2-12s", "text": clip_quote},
+        {"timestamp": "12-18s", "text": f"Full session at {site_name}"},
+    ]
+
+    tiktok_caption = (
+        f"{title}\n\n"
+        f"{description}\n\n"
+        f"Tonight's full session is on {site_name}.\n{landing_page}"
+    )
+    instagram_caption = (
+        f"{title}\n\n"
+        f"{secondary_quote}\n\n"
+        f"{description}\n\n"
+        f"Listen to the full session:\n{landing_page}"
+    )
+
+    return {
+        "title": title,
+        "subtitle": subtitle,
+        "bundle_name": bundle_name,
+        "description": description,
+        "clip_quote": clip_quote,
+        "secondary_quote": secondary_quote,
+        "hooks": hooks,
+        "short_video_outline": short_video_outline,
+        "tiktok_caption": tiktok_caption,
+        "instagram_caption": instagram_caption,
+        "youtube_shorts_title": f"{title} | voice-only sleep support for overthinking nights",
+        "hashtags": [
+            "#sleepmeditation",
+            "#voiceonly",
+            "#sleepaudio",
+            "#fallasleep",
+            "#overthinking",
+            "#nightroutine",
+            "#guidedrest",
+            "#leochan",
+        ],
+        "call_to_action": f"Listen to the full session at {site_name}",
+        "landing_page": landing_page,
+    }
+
+
+def render_promo_pack_markdown(promo: dict) -> str:
+    return (
+        f"# Promo Pack: {promo['title']}\n\n"
+        f"Subtitle: {promo['subtitle']}\n"
+        f"Landing page: {promo['landing_page']}\n\n"
+        "## Hooks\n"
+        + "\n".join(f"- {item}" for item in promo["hooks"])
+        + "\n\n## Short Video Outline\n"
+        + "\n".join(f"- {item['timestamp']}: {item['text']}" for item in promo["short_video_outline"])
+        + f"\n\n## TikTok Caption\n{promo['tiktok_caption']}\n\n"
+        + f"## Instagram Caption\n{promo['instagram_caption']}\n\n"
+        + f"## YouTube Shorts Title\n{promo['youtube_shorts_title']}\n\n"
+        + "## Hashtags\n"
+        + " ".join(promo["hashtags"])
+        + "\n"
+    )
 
 
 def normalize_media_base_url(config: dict) -> str:
