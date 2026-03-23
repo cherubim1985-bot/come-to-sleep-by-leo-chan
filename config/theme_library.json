@@ -70,6 +70,31 @@
     "closing": "If sleep is near, let it find you without effort. If you are still awake, keep floating here a little longer in the quiet."
   },
   {
+    "name": "After the Mind Lets Go",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A gentle night practice for overthinking minds that need a softer way to unwind",
+    "music_tags": [
+      "sleep",
+      "night",
+      "soft",
+      "clear"
+    ],
+    "practice_preferences": [
+      "内观呼吸",
+      "数息法"
+    ],
+    "image_keywords": [
+      "moonlit window",
+      "soft linen",
+      "night air",
+      "quiet lamp"
+    ],
+    "opening": "If your thoughts have been working longer than the day needed from you, stay here with me and let tonight become simpler.",
+    "body_focus": "Let the breath be a quiet place to return to, and let each count, each soft exhale, give the mind less to hold.",
+    "closing": "If your mind loosens its grip now, let sleep arrive in its own way. If not, stay with the breath a little longer and let the night keep softening."
+  },
+  {
     "name": "夜间安睡",
     "category": "Sleep Meditation",
     "subtitle": "让心慢慢放下，让身体慢慢沉入安稳",

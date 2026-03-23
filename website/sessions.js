@@ -1,7 +1,20 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-03-22T20:05:00",
-  "session_count": 2,
+  "updated_at": "2026-03-22T20:12:49",
+  "session_count": 3,
   "sessions": [
+    {
+      "slug": "2026-03-22-after-the-mind-lets-go-3",
+      "date": "2026-03-22",
+      "title": "After The Mind Lets Go",
+      "subtitle": "A gentle night practice for overthinking minds that need a softer way to unwind",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A calming sleep session for nights of overthinking, with softer breath guidance and a clearer path out of mental looping. Made for the kind of bedtime when the body is ready, but the mind has not yet learned how to let go.",
+      "mediaPath": "../output/2026-03-22-after-the-mind-lets-go-3/voiceover.mp3",
+      "posterPath": "../output/2026-03-22-after-the-mind-lets-go-3/cover.svg",
+      "coverTheme": "warm-cover"
+    },
     {
       "slug": "2026-03-19-the-quiet-room",
       "date": "2026-03-19",
