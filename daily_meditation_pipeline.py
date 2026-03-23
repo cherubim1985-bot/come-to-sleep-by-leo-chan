@@ -5,6 +5,7 @@ import argparse
 import base64
 import hashlib
 import json
+import mimetypes
 import os
 import re
 import signal
@@ -2638,6 +2639,57 @@ def build_public_asset_url(media_base_url: str, bundle_name: str, asset_name: st
     return f"{media_base_url}/{parse.quote(bundle_name)}/{parse.quote(asset_name)}"
 
 
+def load_r2_local_config(root: Path) -> dict:
+    local_path = root / "config" / "r2_local.json"
+    return load_json(local_path, {}) if local_path.exists() else {}
+
+
+def upload_assets_to_r2(root: Path, sessions: list[dict], r2_config: dict) -> list[str]:
+    if not r2_config:
+        return []
+
+    try:
+        import boto3
+    except ImportError:
+        return []
+
+    bucket = str(r2_config.get("bucket", "")).strip()
+    endpoint = str(r2_config.get("endpoint", "")).strip()
+    access_key_id = str(r2_config.get("access_key_id", "")).strip()
+    secret_access_key = str(r2_config.get("secret_access_key", "")).strip()
+    if not all([bucket, endpoint, access_key_id, secret_access_key]):
+        return []
+
+    client = boto3.client(
+        "s3",
+        endpoint_url=endpoint,
+        aws_access_key_id=access_key_id,
+        aws_secret_access_key=secret_access_key,
+        region_name="auto",
+    )
+
+    uploaded_keys: list[str] = []
+    for session in sessions:
+        media_path = str(session.get("mediaPath", "")).strip()
+        poster_path = str(session.get("posterPath", "")).strip()
+        for relative_path in [media_path, poster_path]:
+            if not relative_path:
+                continue
+            normalized = parse.unquote(relative_path.replace("../output/", ""))
+            parts = Path(normalized).parts
+            if len(parts) < 2:
+                continue
+            source_file = root / "output" / parts[0] / parts[-1]
+            if not source_file.exists():
+                continue
+            content_type, _ = mimetypes.guess_type(source_file.name)
+            extra_args = {"ContentType": content_type} if content_type else {}
+            client.upload_file(str(source_file), bucket, normalized, ExtraArgs=extra_args)
+            uploaded_keys.append(normalized)
+
+    return uploaded_keys
+
+
 def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] | None = None) -> Path | None:
     website_dir = root / "website"
     if not website_dir.exists():
@@ -2846,12 +2898,16 @@ def main() -> int:
 
     target_date = date.fromisoformat(args.date) if args.date else datetime.now().date()
     config = merge_dict(DEFAULT_CONFIG, load_json(root / "config" / "project_config.json", DEFAULT_CONFIG))
+    r2_config = load_r2_local_config(root)
     themes = load_json(root / "config" / "theme_library.json", DEFAULT_THEMES)
     theme = choose_theme_by_name(themes, args.theme_name) if args.theme_name else choose_theme(themes, target_date)
     music = choose_music(root, config, theme, target_date)
     bundle_dir = write_bundle(root, target_date, config, theme, music, forced_duration_minutes=args.duration_minutes)
     update_state(root, target_date, bundle_dir, theme["name"])
     sessions_path = sync_website_library(root, config, {bundle_dir.name} if args.website_single_latest else None)
+    website_payload = load_json(root / "website" / "sessions.json", {})
+    sessions = website_payload.get("sessions", []) if isinstance(website_payload.get("sessions"), list) else []
+    uploaded_keys = upload_assets_to_r2(root, sessions, r2_config)
     deploy_path = sync_netlify_publish_dir(root, config)
     cloudflare_path = sync_cloudflare_publish_dir(root)
 
@@ -2864,6 +2920,8 @@ def main() -> int:
     print(f"Voice request: {bundle_dir / 'voiceover_request.json'}")
     if sessions_path:
         print(f"Website library synced: {sessions_path}")
+    if uploaded_keys:
+        print(f"Uploaded {len(uploaded_keys)} asset(s) to R2.")
     if deploy_path:
         print(f"Netlify publish dir synced: {deploy_path}")
     if cloudflare_path:

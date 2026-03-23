@@ -91,7 +91,7 @@
     "output_format": "png"
   },
   "publishing": {
-    "media_base_url": "",
-    "copy_media_to_deploy": true
+    "media_base_url": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev",
+    "copy_media_to_deploy": false
   }
 }

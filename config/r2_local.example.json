@@ -1,0 +1,6 @@
+{
+  "bucket": "leo-chan-sleep-audio",
+  "endpoint": "https://YOUR_ACCOUNT_ID.r2.cloudflarestorage.com",
+  "access_key_id": "YOUR_ACCESS_KEY_ID",
+  "secret_access_key": "YOUR_SECRET_ACCESS_KEY"
+}
