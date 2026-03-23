@@ -11,7 +11,7 @@ fi
 
 PIPELINE_ARGS=("$@")
 
-echo "Generating latest session and refreshing Netlify publish directory..."
+echo "Generating latest session and refreshing publish directories..."
 python3 "$ROOT_DIR/daily_meditation_pipeline.py" "${PIPELINE_ARGS[@]}"
 
 echo "Staging website updates..."
@@ -29,4 +29,4 @@ git -C "$ROOT_DIR" commit -m "$COMMIT_MESSAGE"
 echo "Pushing to GitHub..."
 git -C "$ROOT_DIR" push
 
-echo "Done. Netlify will deploy automatically."
+echo "Done. Cloudflare Pages will deploy automatically after the GitHub push."

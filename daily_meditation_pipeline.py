@@ -108,6 +108,10 @@ DEFAULT_CONFIG = {
         "background": "opaque",
         "output_format": "png",
     },
+    "publishing": {
+        "media_base_url": "",
+        "copy_media_to_deploy": True,
+    },
 }
 DEFAULT_THEMES = [
     {
@@ -2602,6 +2606,11 @@ def build_session_description(title: str, subtitle: str, traditions: list[dict],
             "A quieter, more spacious sleep session for nights that feel mentally full. "
             "Built around simple presence and a softer, Zen-shaped way of letting thought pass without following it."
         )
+    if "after the mind lets go" in lowered_title:
+        return (
+            "A calming sleep session for nights of overthinking, with softer breath guidance and a clearer path out of mental looping. "
+            "Made for the kind of bedtime when the body is ready, but the mind has not yet learned how to let go."
+        )
     if "still waters" in lowered_title:
         return (
             "A deeply unwinding sleep meditation with a steady human voice, slower exhales, and long settling pauses. "
@@ -2618,18 +2627,34 @@ def build_session_description(title: str, subtitle: str, traditions: list[dict],
     return f"{subtitle} Best played in a quiet room while your breathing and body gradually soften."
 
 
-def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) -> Path | None:
+def normalize_media_base_url(config: dict) -> str:
+    publishing = config.get("publishing", {}) if isinstance(config.get("publishing"), dict) else {}
+    return str(publishing.get("media_base_url", "")).strip().rstrip("/")
+
+
+def build_public_asset_url(media_base_url: str, bundle_name: str, asset_name: str | None) -> str | None:
+    if not media_base_url or not asset_name:
+        return None
+    return f"{media_base_url}/{parse.quote(bundle_name)}/{parse.quote(asset_name)}"
+
+
+def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] | None = None) -> Path | None:
     website_dir = root / "website"
     if not website_dir.exists():
         return None
 
     bundle_dirs = sorted([path for path in (root / "output").iterdir() if path.is_dir()], reverse=True)
     sessions = []
+    media_base_url = normalize_media_base_url(config)
+    seen_titles: set[str] = set()
 
     for bundle_dir in bundle_dirs:
         if only_bundle_names and bundle_dir.name not in only_bundle_names:
             continue
         title = infer_title_from_bundle_dir(bundle_dir)
+        normalized_title = title.strip().lower()
+        if normalized_title in seen_titles:
+            continue
         manifest = load_json(bundle_dir / "bundle_manifest.json", {})
         if not is_modern_voice_only_bundle(bundle_dir, manifest):
             continue
@@ -2637,6 +2662,7 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
         media_name, poster_name, kind = infer_media_paths(bundle_dir, manifest)
         if not media_name:
             continue
+        seen_titles.add(normalized_title)
 
         category = str(manifest.get("category", "Sleep Meditation")).strip() or "Sleep Meditation"
         meta_parts = [category]
@@ -2662,7 +2688,9 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
                 "meta": " · ".join(meta_parts),
                 "description": build_session_description(title, subtitle, [], "audio", manifest),
                 "mediaPath": f"../output/{bundle_dir.name}/{parse.quote(media_name)}",
+                "publicMediaPath": build_public_asset_url(media_base_url, bundle_dir.name, media_name),
                 "posterPath": f"../output/{bundle_dir.name}/{parse.quote(poster_name)}" if poster_name else None,
+                "publicPosterPath": build_public_asset_url(media_base_url, bundle_dir.name, poster_name),
                 "coverTheme": pick_cover_theme(title),
             }
         )
@@ -2680,7 +2708,7 @@ def sync_website_library(root: Path, only_bundle_names: set[str] | None = None) 
     return json_path
 
 
-def sync_netlify_publish_dir(root: Path) -> Path | None:
+def sync_netlify_publish_dir(root: Path, config: dict) -> Path | None:
     website_dir = root / "website"
     sessions_path = website_dir / "sessions.json"
     if not website_dir.exists() or not sessions_path.exists():
@@ -2688,6 +2716,9 @@ def sync_netlify_publish_dir(root: Path) -> Path | None:
 
     payload = load_json(sessions_path, {})
     sessions = payload.get("sessions", []) if isinstance(payload.get("sessions"), list) else []
+    publishing = config.get("publishing", {}) if isinstance(config.get("publishing"), dict) else {}
+    copy_media_to_deploy = bool(publishing.get("copy_media_to_deploy", True))
+    media_base_url = normalize_media_base_url(config)
     deploy_dir = root / "deploy" / "netlify-site"
     deploy_output_dir = deploy_dir / "output"
 
@@ -2696,28 +2727,29 @@ def sync_netlify_publish_dir(root: Path) -> Path | None:
         shutil.rmtree(deploy_output_dir)
     deploy_output_dir.mkdir(parents=True, exist_ok=True)
 
-    for filename in ["index.html", "styles.css", "app.js", "sessions.js", "sessions.json"]:
+    for filename in ["index.html", "styles.css", "app.js", "site-config.js", "sessions.js", "sessions.json"]:
         source = website_dir / filename
         if source.exists():
             shutil.copy2(source, deploy_dir / filename)
 
     copied_bundles: set[str] = set()
-    for session in sessions:
-        media_path = str(session.get("mediaPath", "")).strip()
-        poster_path = str(session.get("posterPath", "")).strip()
-        referenced_paths = [path for path in [media_path, poster_path] if path]
-        for relative_path in referenced_paths:
-            normalized = parse.unquote(relative_path.replace("../output/", ""))
-            parts = Path(normalized).parts
-            if len(parts) < 2:
-                continue
-            bundle_name = parts[0]
-            bundle_target_dir = deploy_output_dir / bundle_name
-            bundle_target_dir.mkdir(parents=True, exist_ok=True)
-            source_file = root / "output" / bundle_name / parts[-1]
-            if source_file.exists():
-                shutil.copy2(source_file, bundle_target_dir / parts[-1])
-                copied_bundles.add(bundle_name)
+    if copy_media_to_deploy:
+        for session in sessions:
+            media_path = str(session.get("mediaPath", "")).strip()
+            poster_path = str(session.get("posterPath", "")).strip()
+            referenced_paths = [path for path in [media_path, poster_path] if path]
+            for relative_path in referenced_paths:
+                normalized = parse.unquote(relative_path.replace("../output/", ""))
+                parts = Path(normalized).parts
+                if len(parts) < 2:
+                    continue
+                bundle_name = parts[0]
+                bundle_target_dir = deploy_output_dir / bundle_name
+                bundle_target_dir.mkdir(parents=True, exist_ok=True)
+                source_file = root / "output" / bundle_name / parts[-1]
+                if source_file.exists():
+                    shutil.copy2(source_file, bundle_target_dir / parts[-1])
+                    copied_bundles.add(bundle_name)
 
     for filename in ["index.html", "sessions.js", "sessions.json"]:
         target_path = deploy_dir / filename
@@ -2738,6 +2770,8 @@ def sync_netlify_publish_dir(root: Path) -> Path | None:
                 "How it updates:",
                 "- Every time `daily_meditation_pipeline.py` generates a new session, this folder is refreshed automatically.",
                 "- Netlify should use this folder as the publish directory.",
+                f"- External media base URL: {media_base_url or 'not set'}",
+                f"- Copy media into deploy output: {'yes' if copy_media_to_deploy else 'no'}",
                 "",
                 "Recommended Netlify setup:",
                 "- Build command: leave empty",
@@ -2769,6 +2803,28 @@ def sync_netlify_publish_dir(root: Path) -> Path | None:
     return deploy_dir
 
 
+def sync_cloudflare_publish_dir(root: Path) -> Path | None:
+    netlify_dir = root / "deploy" / "netlify-site"
+    if not netlify_dir.exists():
+        return None
+
+    cloudflare_dir = root / "deploy" / "cloudflare-pages"
+    if cloudflare_dir.exists():
+        shutil.rmtree(cloudflare_dir)
+    shutil.copytree(netlify_dir, cloudflare_dir)
+
+    readme_path = cloudflare_dir / "README.md"
+    if readme_path.exists():
+        content = readme_path.read_text(encoding="utf-8")
+        content = content.replace("ready-to-upload Netlify package", "ready-to-upload Cloudflare Pages package")
+        content = content.replace("- Netlify should use this folder as the publish directory.", "- Cloudflare Pages can use this folder for direct upload.")
+        content = content.replace("Recommended Netlify setup:", "Recommended Cloudflare Pages setup:")
+        content = content.replace("- Publish directory: deploy/netlify-site", "- Build output directory: deploy/netlify-site")
+        readme_path.write_text(content, encoding="utf-8")
+
+    return cloudflare_dir
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="生成每日冥想视频素材包，供剪映专业版导入。")
     parser.add_argument("--root", type=Path, default=Path.cwd(), help="项目根目录。")
@@ -2795,8 +2851,9 @@ def main() -> int:
     music = choose_music(root, config, theme, target_date)
     bundle_dir = write_bundle(root, target_date, config, theme, music, forced_duration_minutes=args.duration_minutes)
     update_state(root, target_date, bundle_dir, theme["name"])
-    sessions_path = sync_website_library(root, {bundle_dir.name} if args.website_single_latest else None)
-    deploy_path = sync_netlify_publish_dir(root)
+    sessions_path = sync_website_library(root, config, {bundle_dir.name} if args.website_single_latest else None)
+    deploy_path = sync_netlify_publish_dir(root, config)
+    cloudflare_path = sync_cloudflare_publish_dir(root)
 
     print(f"Created daily meditation bundle: {bundle_dir}")
     print(f"Theme: {theme['name']}")
@@ -2809,6 +2866,8 @@ def main() -> int:
         print(f"Website library synced: {sessions_path}")
     if deploy_path:
         print(f"Netlify publish dir synced: {deploy_path}")
+    if cloudflare_path:
+        print(f"Cloudflare Pages package synced: {cloudflare_path}")
     return 0
 
 

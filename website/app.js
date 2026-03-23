@@ -9,6 +9,7 @@ const heroSessionSource = document.querySelector("#hero-session-source");
 const AUDIO_LOOP_WINDOW_SECONDS = 2 * 60 * 60;
 const SITE_CONFIG = window.SITE_CONFIG || {};
 const GA_MEASUREMENT_ID = String(SITE_CONFIG.gaMeasurementId || "").trim();
+const MEDIA_BASE_URL = String(SITE_CONFIG.mediaBaseUrl || "").trim().replace(/\/+$/, "");
 
 let activeFilter = "all";
 let gaReady = false;
@@ -55,16 +56,43 @@ function escapeHtml(value) {
   });
 }
 
+function resolvePosterPath(session) {
+  return resolveAssetPath(session.publicPosterPath || session.posterPath || "");
+}
+
+function resolveMediaPath(session) {
+  return resolveAssetPath(session.publicMediaPath || session.mediaPath || "");
+}
+
+function resolveAssetPath(pathValue) {
+  const rawPath = String(pathValue || "").trim();
+  if (!rawPath) {
+    return "";
+  }
+  if (/^https?:\/\//i.test(rawPath)) {
+    return rawPath;
+  }
+  if (!MEDIA_BASE_URL) {
+    return rawPath;
+  }
+
+  const normalized = rawPath.replace(/^(\.\.\/|\.\/)+output\//, "");
+  return normalized === rawPath ? rawPath : `${MEDIA_BASE_URL}/${normalized}`;
+}
+
 function renderMedia(session) {
-  if (session.kind === "video" && session.mediaPath) {
+  const mediaPath = resolveMediaPath(session);
+  const posterPath = resolvePosterPath(session);
+
+  if (session.kind === "video" && mediaPath) {
     return `
-      <video controls preload="metadata" ${session.posterPath ? `poster="${escapeHtml(session.posterPath)}"` : ""}>
-        <source src="${escapeHtml(session.mediaPath)}" type="video/mp4" />
+      <video controls preload="metadata" ${posterPath ? `poster="${escapeHtml(posterPath)}"` : ""}>
+        <source src="${escapeHtml(mediaPath)}" type="video/mp4" />
       </video>
     `;
   }
 
-  if (session.kind === "audio" && session.mediaPath) {
+  if (session.kind === "audio" && mediaPath) {
     return `
       <audio
         controls
@@ -75,7 +103,7 @@ function renderMedia(session) {
         data-session-meta="${escapeHtml(session.meta || "")}"
         data-source-section="library"
       >
-        <source src="${escapeHtml(session.mediaPath)}" type="audio/mpeg" />
+        <source src="${escapeHtml(mediaPath)}" type="audio/mpeg" />
       </audio>
     `;
   }
@@ -219,25 +247,28 @@ function updateHeroSession(sessions) {
     return;
   }
 
-  if (latestSession.posterPath) {
-    heroSessionImage.src = latestSession.posterPath;
+  const posterPath = resolvePosterPath(latestSession);
+  const mediaPath = resolveMediaPath(latestSession);
+
+  if (posterPath) {
+    heroSessionImage.src = posterPath;
   }
   heroSessionImage.alt = `${latestSession.title} cover`;
   heroSessionTitle.textContent = latestSession.title || "Tonight's Session";
   heroSessionSubtitle.textContent = latestSession.subtitle || latestSession.description || "A gentle session for tonight.";
-  if (heroSessionAudio && heroSessionSource && latestSession.mediaPath) {
+  if (heroSessionAudio && heroSessionSource && mediaPath) {
     heroSessionAudio.dataset.sessionSlug = latestSession.slug || "";
     heroSessionAudio.dataset.sessionTitle = latestSession.title || "";
     heroSessionAudio.dataset.sessionMeta = latestSession.meta || "";
     heroSessionAudio.dataset.sourceSection = "hero";
-    heroSessionSource.src = latestSession.mediaPath;
+    heroSessionSource.src = mediaPath;
     heroSessionAudio.load();
   }
 }
 
 function renderSessions(sessions) {
 const normalizedSessions = sessions.filter((session) => {
-  const mediaPath = String(session.mediaPath || "").toLowerCase();
+  const mediaPath = resolveMediaPath(session).toLowerCase();
   return session.kind === "audio" && mediaPath.endsWith(".mp3");
 });
 

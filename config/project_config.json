@@ -89,5 +89,9 @@
     "quality": "high",
     "background": "opaque",
     "output_format": "png"
+  },
+  "publishing": {
+    "media_base_url": "",
+    "copy_media_to_deploy": true
   }
 }

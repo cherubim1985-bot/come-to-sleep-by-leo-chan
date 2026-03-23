@@ -5,6 +5,8 @@ This folder is the ready-to-upload Netlify package.
 How it updates:
 - Every time `daily_meditation_pipeline.py` generates a new session, this folder is refreshed automatically.
 - Netlify should use this folder as the publish directory.
+- External media base URL: not set
+- Copy media into deploy output: yes
 
 Recommended Netlify setup:
 - Build command: leave empty
