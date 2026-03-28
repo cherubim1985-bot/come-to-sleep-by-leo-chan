@@ -11,6 +11,7 @@ import re
 import signal
 import shutil
 import subprocess
+import sys
 import time
 import wave
 from array import array
@@ -113,10 +114,12 @@ DEFAULT_CONFIG = {
     "image_generation": {
         "provider": "manual",
         "api_key": "",
+        "endpoint": "https://operator.las.cn-beijing.volces.com/api/v1/images/generations",
         "model": "gpt-image-1",
         "size": "1536x1024",
         "quality": "high",
         "background": "opaque",
+        "watermark": True,
         "output_format": "png",
     },
     "publishing": {
@@ -421,6 +424,13 @@ def slugify(text: str) -> str:
     value = re.sub(r"[^\w\u4e00-\u9fff-]+", "-", text, flags=re.UNICODE)
     value = re.sub(r"-{2,}", "-", value).strip("-")
     return value.lower() or "daily-meditation"
+
+
+def parse_image_size(value: str) -> tuple[int, int]:
+    match = re.fullmatch(r"\s*(\d+)\s*x\s*(\d+)\s*", str(value), flags=re.IGNORECASE)
+    if not match:
+        return 1536, 1024
+    return int(match.group(1)), int(match.group(2))
 
 
 def load_json(path: Path, fallback):
@@ -1111,8 +1121,10 @@ def build_english_sleep_script(
 def build_image_prompt(theme: dict, video_title: str) -> str:
     keywords = ", ".join(theme["image_keywords"])
     return (
-        f"Create a calming static meditation background for the title '{video_title}', "
-        f"cinematic, minimal, serene, centered composition, {keywords}, no people, no text, 16:9."
+        f"Create a modern, emotionally gentle sleep-meditation website hero image for the title '{video_title}'. "
+        f"Use a deep midnight-blue palette, warm amber light, cinematic realistic photography, "
+        f"clean composition, subtle luxury wellness branding, calm negative space, {keywords}, "
+        f"no people, no human figure, no historical costume, no ancient China aesthetic, no text, 16:9."
     )
 
 
@@ -1510,9 +1522,73 @@ def build_image_request(theme: dict, config: dict, title: str, bundle_name: str)
     }
 
 
+def resolve_openai_api_key(image_config: dict) -> str:
+    api_key = str(image_config.get("api_key", "")).strip()
+    if api_key:
+        return api_key
+    return str(os.getenv("OPENAI_API_KEY", "")).strip()
+
+
+def resolve_volcengine_image_api_key(image_config: dict) -> str:
+    api_key = str(image_config.get("api_key", "")).strip()
+    if api_key:
+        return api_key
+    return str(os.getenv("LAS_API_KEY", "")).strip() or str(os.getenv("ARK_API_KEY", "")).strip()
+
+
+def resolve_volcengine_cv_credentials(image_config: dict) -> tuple[str, str]:
+    access_key_id = str(image_config.get("access_key_id", "")).strip() or str(os.getenv("VOLCENGINE_ACCESS_KEY_ID", "")).strip()
+    secret_access_key = str(image_config.get("secret_access_key", "")).strip() or str(os.getenv("VOLCENGINE_SECRET_ACCESS_KEY", "")).strip()
+    return access_key_id, secret_access_key
+
+
+def add_optional_python_path(path_value: str | None) -> None:
+    if not path_value:
+        return
+    candidate = Path(path_value).expanduser().resolve()
+    if candidate.exists() and str(candidate) not in sys.path:
+        sys.path.insert(0, str(candidate))
+
+
+def import_volcengine_cv_sdk(image_config: dict):
+    sdk_paths = [
+        str(image_config.get("sdk_path", "")).strip(),
+        str(os.getenv("VOLCENGINE_SDK_PATH", "")).strip(),
+        "third_party/volc-sdk",
+        "/tmp/volc-sdk",
+    ]
+    for path_value in sdk_paths:
+        add_optional_python_path(path_value)
+    from volcenginesdkcore.configuration import Configuration  # type: ignore
+    from volcenginesdkcore.api_client import ApiClient  # type: ignore
+    from volcenginesdkcv20240606.api.cv20240606_api import CV20240606Api  # type: ignore
+    from volcenginesdkcv20240606.models.high_aes_general_v20_request import HighAesGeneralV20Request  # type: ignore
+
+    return Configuration, ApiClient, CV20240606Api, HighAesGeneralV20Request
+
+
+def write_image_generation_result(bundle_dir: Path, generated_image: GeneratedAssetResult) -> None:
+    (bundle_dir / "image_generation_result.json").write_text(
+        json.dumps(
+            {
+                "provider": generated_image.provider,
+                "status": generated_image.status,
+                "request_payload": generated_image.request_payload,
+                "output_file": generated_image.output_file,
+                "source_url": generated_image.source_url,
+                "message": generated_image.message,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def generate_image_via_openai(bundle_dir: Path, config: dict, image_request: dict) -> GeneratedAssetResult:
     image_config = config.get("image_generation", {})
-    api_key = str(image_config.get("api_key", "")).strip()
+    api_key = resolve_openai_api_key(image_config)
     if not api_key:
         return GeneratedAssetResult(
             provider="openai",
@@ -1520,7 +1596,7 @@ def generate_image_via_openai(bundle_dir: Path, config: dict, image_request: dic
             request_payload=image_request,
             output_file=None,
             source_url=None,
-            message="OpenAI API key 未配置，已只生成 image_request.json。",
+            message="OpenAI API key 未配置，已只生成 image_request.json。可在 config/project_config.json 填写 api_key，或设置环境变量 OPENAI_API_KEY。",
         )
 
     payload = {
@@ -1594,10 +1670,182 @@ def generate_image_via_openai(bundle_dir: Path, config: dict, image_request: dic
         )
 
 
+def generate_image_via_volcengine(bundle_dir: Path, config: dict, image_request: dict) -> GeneratedAssetResult:
+    image_config = config.get("image_generation", {})
+    api_key = resolve_volcengine_image_api_key(image_config)
+    if not api_key:
+        return GeneratedAssetResult(
+            provider="volcengine_las",
+            status="skipped",
+            request_payload=image_request,
+            output_file=None,
+            source_url=None,
+            message="火山图片 API key 未配置。可在 config/project_config.json 填写 image_generation.api_key，或设置环境变量 LAS_API_KEY / ARK_API_KEY。",
+        )
+
+    payload = {
+        "model": image_request["model"],
+        "prompt": image_request["prompt"],
+        "size": image_request["size"],
+        "response_format": "b64_json",
+        "watermark": bool(image_config.get("watermark", True)),
+    }
+    endpoint = str(image_config.get("endpoint", "")).strip() or "https://operator.las.cn-beijing.volces.com/api/v1/images/generations"
+    timeout_seconds = 180
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}",
+    }
+    try:
+        response_payload = post_json(endpoint, payload, headers, timeout_seconds)
+        data_items = response_payload.get("data", [])
+        if not data_items:
+            return GeneratedAssetResult(
+                provider="volcengine_las",
+                status="failed",
+                request_payload=payload,
+                output_file=None,
+                source_url=None,
+                message="火山图片接口没有返回 data。",
+            )
+        image_item = data_items[0]
+        output_path = bundle_dir / image_request["expected_output_file"]
+        if image_item.get("b64_json"):
+            write_binary_file(output_path, base64.b64decode(image_item["b64_json"]))
+            return GeneratedAssetResult(
+                provider="volcengine_las",
+                status="generated",
+                request_payload=payload,
+                output_file=output_path.name,
+                source_url=None,
+                message="已通过火山图片生成 API 生成静态图片。",
+            )
+        image_url = str(image_item.get("url", "")).strip()
+        if image_url:
+            write_binary_file(output_path, download_binary(image_url, timeout_seconds))
+            return GeneratedAssetResult(
+                provider="volcengine_las",
+                status="generated",
+                request_payload=payload,
+                output_file=output_path.name,
+                source_url=image_url,
+                message="已通过火山图片生成 API 生成静态图片。",
+            )
+        return GeneratedAssetResult(
+            provider="volcengine_las",
+            status="failed",
+            request_payload=payload,
+            output_file=None,
+            source_url=None,
+            message="火山图片接口没有返回 b64_json 或 url。",
+        )
+    except (error.URLError, TimeoutError, json.JSONDecodeError, ValueError) as exc:
+        return GeneratedAssetResult(
+            provider="volcengine_las",
+            status="failed",
+            request_payload=payload,
+            output_file=None,
+            source_url=None,
+            message=f"火山图片生成失败：{exc}",
+        )
+
+
+def generate_image_via_volcengine_cv(bundle_dir: Path, config: dict, image_request: dict) -> GeneratedAssetResult:
+    image_config = config.get("image_generation", {})
+    access_key_id, secret_access_key = resolve_volcengine_cv_credentials(image_config)
+    if not access_key_id or not secret_access_key:
+        return GeneratedAssetResult(
+            provider="volcengine_cv",
+            status="skipped",
+            request_payload=image_request,
+            output_file=None,
+            source_url=None,
+            message="火山文生图 AK/SK 未配置。请设置 image_generation.access_key_id / secret_access_key，或环境变量 VOLCENGINE_ACCESS_KEY_ID / VOLCENGINE_SECRET_ACCESS_KEY。",
+        )
+
+    try:
+        Configuration, ApiClient, CV20240606Api, HighAesGeneralV20Request = import_volcengine_cv_sdk(image_config)
+    except ModuleNotFoundError as exc:
+        return GeneratedAssetResult(
+            provider="volcengine_cv",
+            status="failed",
+            request_payload=image_request,
+            output_file=None,
+            source_url=None,
+            message=f"火山 CV SDK 未安装：{exc}. 可先安装到 third_party/volc-sdk。",
+        )
+
+    req_key = str(image_config.get("req_key", "high_aes_general_v20")).strip() or "high_aes_general_v20"
+    model_version = str(image_config.get("model_version", "general_v2.0")).strip() or "general_v2.0"
+    width, height = parse_image_size(image_request.get("size", "1536x1024"))
+    payload = {
+        "prompt": image_request["prompt"],
+        "req_key": req_key,
+        "model_version": model_version,
+        "width": width,
+        "height": height,
+        "return_url": False,
+    }
+
+    try:
+        configuration = Configuration()
+        configuration.ak = access_key_id
+        configuration.sk = secret_access_key
+        configuration.region = str(image_config.get("region", "cn-beijing")).strip() or "cn-beijing"
+        api = CV20240606Api(ApiClient(configuration))
+        request_body = HighAesGeneralV20Request(**payload)
+        response = api.high_aes_general_v20(request_body)
+        data = getattr(response, "data", None)
+        binary_data = getattr(data, "binary_data_base64", None) if data is not None else None
+        output_path = bundle_dir / image_request["expected_output_file"]
+        if binary_data:
+            write_binary_file(output_path, base64.b64decode(binary_data[0]))
+            return GeneratedAssetResult(
+                provider="volcengine_cv",
+                status="generated",
+                request_payload=payload,
+                output_file=output_path.name,
+                source_url=None,
+                message=f"已通过火山文生图 API 生成静态图片。request_id={getattr(response, 'request_id', '')}",
+            )
+        image_urls = getattr(data, "image_urls", None) if data is not None else None
+        if image_urls:
+            write_binary_file(output_path, download_binary(str(image_urls[0]), 180))
+            return GeneratedAssetResult(
+                provider="volcengine_cv",
+                status="generated",
+                request_payload=payload,
+                output_file=output_path.name,
+                source_url=str(image_urls[0]),
+                message=f"已通过火山文生图 API 生成静态图片。request_id={getattr(response, 'request_id', '')}",
+            )
+        return GeneratedAssetResult(
+            provider="volcengine_cv",
+            status="failed",
+            request_payload=payload,
+            output_file=None,
+            source_url=None,
+            message=f"火山文生图接口没有返回图片数据。request_id={getattr(response, 'request_id', '')}",
+        )
+    except Exception as exc:
+        return GeneratedAssetResult(
+            provider="volcengine_cv",
+            status="failed",
+            request_payload=payload,
+            output_file=None,
+            source_url=None,
+            message=f"火山文生图生成失败：{exc}",
+        )
+
+
 def maybe_generate_image(bundle_dir: Path, config: dict, image_request: dict) -> GeneratedAssetResult:
     provider = str(config.get("image_generation", {}).get("provider", "manual")).strip().lower()
     if provider == "openai":
         return generate_image_via_openai(bundle_dir, config, image_request)
+    if provider in {"volcengine", "volcengine_las", "ark"}:
+        return generate_image_via_volcengine(bundle_dir, config, image_request)
+    if provider in {"volcengine_cv", "volcengine_vision", "volc_cv"}:
+        return generate_image_via_volcengine_cv(bundle_dir, config, image_request)
     return GeneratedAssetResult(
         provider=provider or "manual",
         status="manual",
@@ -1606,6 +1854,55 @@ def maybe_generate_image(bundle_dir: Path, config: dict, image_request: dict) ->
         source_url=None,
         message="当前为手动模式，已生成 image_request.json。",
     )
+
+
+def resolve_theme_for_bundle(root: Path, bundle_dir: Path, themes: list[dict]) -> dict:
+    script = load_json(bundle_dir / "script.json", {})
+    manifest = load_json(bundle_dir / "bundle_manifest.json", {})
+    candidates = [
+        str(script.get("title", "")).strip(),
+        str(manifest.get("title", "")).strip(),
+        infer_title_from_bundle_dir(bundle_dir).strip(),
+    ]
+    for candidate in candidates:
+        if not candidate:
+            continue
+        try:
+            return choose_theme_by_name(themes, candidate)
+        except ValueError:
+            continue
+    raise ValueError(f"Could not match bundle to a theme: {bundle_dir.name}")
+
+
+def refresh_bundle_image(root: Path, config: dict, bundle_name: str) -> tuple[Path, GeneratedAssetResult]:
+    bundle_dir = root / "output" / bundle_name
+    if not bundle_dir.exists():
+        raise FileNotFoundError(f"Bundle not found: {bundle_name}")
+
+    themes = load_json(root / "config" / "theme_library.json", DEFAULT_THEMES)
+    theme = resolve_theme_for_bundle(root, bundle_dir, themes)
+    script = load_json(bundle_dir / "script.json", {})
+    title = str(script.get("title", "")).strip() or infer_title_from_bundle_dir(bundle_dir)
+
+    image_prompt = build_image_prompt(theme, title)
+    image_request = build_image_request(theme, config, title, bundle_dir.name)
+    (bundle_dir / "image_prompt.txt").write_text(image_prompt + "\n", encoding="utf-8")
+    (bundle_dir / "image_request.json").write_text(json.dumps(image_request, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    generated_image = maybe_generate_image(bundle_dir, config, image_request)
+    write_image_generation_result(bundle_dir, generated_image)
+
+    manifest = load_json(bundle_dir / "bundle_manifest.json", {})
+    if isinstance(manifest, dict):
+        files = manifest.setdefault("files", {})
+        if isinstance(files, dict):
+            files["cover"] = generated_image.output_file or "cover.svg"
+            files["fallback_cover"] = "cover.svg"
+        manifest["image_generation_status"] = generated_image.status
+        manifest["image_generation_message"] = generated_image.message
+        (bundle_dir / "bundle_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    return bundle_dir, generated_image
 
 
 def generate_voice_via_elevenlabs(bundle_dir: Path, config: dict, voice_request: dict) -> GeneratedAssetResult:
@@ -2463,22 +2760,7 @@ def write_bundle(
     (bundle_dir / "voiceover_request.json").write_text(json.dumps(voice_request, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (bundle_dir / "cover.svg").write_text(cover_svg, encoding="utf-8")
     generated_image = maybe_generate_image(bundle_dir, config, image_request)
-    (bundle_dir / "image_generation_result.json").write_text(
-        json.dumps(
-            {
-                "provider": generated_image.provider,
-                "status": generated_image.status,
-                "request_payload": generated_image.request_payload,
-                "output_file": generated_image.output_file,
-                "source_url": generated_image.source_url,
-                "message": generated_image.message,
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    write_image_generation_result(bundle_dir, generated_image)
     generated_music = maybe_generate_music(bundle_dir, config, music_request)
     (bundle_dir / "music_generation_result.json").write_text(
         json.dumps(
@@ -3056,6 +3338,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--root", type=Path, default=Path.cwd(), help="项目根目录。")
     parser.add_argument("--date", type=str, default=None, help="目标日期，格式 YYYY-MM-DD。默认今天。")
     parser.add_argument("--bootstrap-only", action="store_true", help="只初始化项目文件，不生成当日素材。")
+    parser.add_argument("--image-only-bundle", type=str, default=None, help="只为现有 bundle 生成或重生成图片。")
     parser.add_argument("--theme-name", type=str, default=None, help="指定主题名。")
     parser.add_argument("--website-single-latest", action="store_true", help="网站只同步本次生成的单条内容。")
     parser.add_argument("--duration-minutes", type=int, default=None, help="指定生成时长（分钟）。")
@@ -3072,6 +3355,16 @@ def main() -> int:
 
     target_date = date.fromisoformat(args.date) if args.date else datetime.now().date()
     config = merge_dict(DEFAULT_CONFIG, load_json(root / "config" / "project_config.json", DEFAULT_CONFIG))
+    if args.image_only_bundle:
+        bundle_dir, generated_image = refresh_bundle_image(root, config, args.image_only_bundle)
+        print(f"Image bundle refreshed: {bundle_dir}")
+        print(f"Provider: {generated_image.provider}")
+        print(f"Status: {generated_image.status}")
+        if generated_image.output_file:
+            print(f"Output image: {bundle_dir / generated_image.output_file}")
+        print(generated_image.message)
+        return 0
+
     r2_config = load_r2_local_config(root)
     themes = load_json(root / "config" / "theme_library.json", DEFAULT_THEMES)
     theme = choose_theme_by_name(themes, args.theme_name) if args.theme_name else choose_theme(themes, target_date)

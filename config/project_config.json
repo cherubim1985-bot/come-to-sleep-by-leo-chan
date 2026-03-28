@@ -92,16 +92,23 @@
     "extra_payload": {}
   },
   "image_generation": {
-    "provider": "manual",
+    "provider": "volcengine_cv",
     "api_key": "",
-    "model": "gpt-image-1",
+    "access_key_id": "",
+    "secret_access_key": "",
+    "sdk_path": "third_party/volc-sdk",
+    "region": "cn-beijing",
+    "req_key": "high_aes_general_v20",
+    "model_version": "general_v2.0",
+    "model": "high_aes_general_v20",
     "size": "1536x1024",
     "quality": "high",
     "background": "opaque",
+    "watermark": true,
     "output_format": "png"
   },
   "publishing": {
     "media_base_url": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev",
-    "copy_media_to_deploy": false
+    "copy_media_to_deploy": true
   }
 }

@@ -126,8 +126,14 @@ python3 daily_meditation_pipeline.py --date 2026-03-15
 
 如果你要自动生成每日冥想静态图：
 
-- 把 `image_generation.provider` 改成 `openai`
-- 填入 `image_generation.api_key`
+- OpenAI 方案：
+  把 `image_generation.provider` 改成 `openai`
+  填入 `image_generation.api_key`，或直接设置环境变量 `OPENAI_API_KEY`
+- 火山引擎方案：
+  把 `image_generation.provider` 改成 `volcengine_cv`
+  填入 `image_generation.access_key_id` 和 `image_generation.secret_access_key`
+  或直接设置环境变量 `VOLCENGINE_ACCESS_KEY_ID` / `VOLCENGINE_SECRET_ACCESS_KEY`
+  首次使用前把官方 Python SDK 安装到 `third_party/volc-sdk`
 - 可选调整 `model`、`size`、`quality`
 
 脚本会自动生成：
@@ -135,6 +141,20 @@ python3 daily_meditation_pipeline.py --date 2026-03-15
 - `image_request.json`
 - `image_generation_result.json`
 - 实际图片文件，例如 `2026-03-20-睡前释放-image.png`
+
+如果你只想先给某一条已生成的 session 本地出图预览，不想重跑整条音频流程：
+
+```bash
+OPENAI_API_KEY=你的key \
+python3 daily_meditation_pipeline.py --image-only-bundle 2026-03-27-lanterns-after-rain-2
+```
+
+这条命令会只刷新该 bundle 的：
+
+- `image_prompt.txt`
+- `image_request.json`
+- `image_generation_result.json`
+- 实际图片文件，例如 `2026-03-27-lanterns-after-rain-2-image.png`
 
 ### 4. 主题库
 
