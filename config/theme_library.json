@@ -1,5 +1,29 @@
 [
   {
+    "name": "Lanterns After Rain",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A warm voice-led night practice for the hour when the world has finally gone quiet again",
+    "music_tags": [
+      "sleep",
+      "night",
+      "rain",
+      "warm"
+    ],
+    "practice_preferences": [
+      "禅宗观照"
+    ],
+    "image_keywords": [
+      "rain-washed street",
+      "paper lantern glow",
+      "wet stone path",
+      "quiet midnight air"
+    ],
+    "opening": "If the day has only just finished letting go of you, stay here with me and let the night grow softer after the rain.",
+    "body_focus": "Feel the body being carried by the bed, and let each breath be like warm light returning to a room that has finally gone quiet.",
+    "closing": "If sleep is near, let it come the way rain leaves a street shining and still. If you are still awake, stay here a little longer in the warm quiet."
+  },
+  {
     "name": "Still Waters at Night",
     "category": "Sleep Meditation",
     "language": "en",

@@ -8,7 +8,7 @@
   "caption_segment_seconds": 12,
   "chapter_minutes": 2,
   "voice_clone": {
-    "provider": "volcengine_v1",
+    "provider": "edge_tts",
     "voice_id": "replace-with-your-cloned-voice-id",
     "speaker_name": "My Clone Voice",
     "instructions": "温柔、稳定、慢速、贴近耳语但清晰。",
@@ -40,6 +40,16 @@
       "rate": 115,
       "sample_rate": 24000,
       "channels": 1,
+      "max_chunk_chars": 220
+    },
+    "edge_tts": {
+      "python_bin": ".venv-edge/bin/python",
+      "script_path": "tools/edge_tts_runner.py",
+      "temp_dir": "tmp/edge-tts",
+      "voice": "en-US-JennyNeural",
+      "rate": "-15%",
+      "volume": "+0%",
+      "pitch": "-8Hz",
       "max_chunk_chars": 220
     },
     "volcengine": {

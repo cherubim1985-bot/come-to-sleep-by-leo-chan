@@ -1,0 +1,29 @@
+{
+  "provider": "edge_tts",
+  "status": "generated",
+  "request_payload": {
+    "command": [
+      ".venv-edge/bin/python",
+      "tools/edge_tts_runner.py",
+      "--blocks-file",
+      "tmp/edge-tts/bundle-2026-03-27-lanterns-after-rain/spoken_blocks.json",
+      "--output",
+      "/Users/xuguangchen/.codex/worktrees/c96a/Video Jianying/output/2026-03-27-lanterns-after-rain/voiceover.wav",
+      "--temp-dir",
+      "tmp/edge-tts/bundle-2026-03-27-lanterns-after-rain",
+      "--voice",
+      "en-US-JennyNeural",
+      "--rate=-15%",
+      "--volume=+0%",
+      "--pitch=-8Hz"
+    ],
+    "voice": "en-US-JennyNeural",
+    "rate": "-15%",
+    "volume": "+0%",
+    "pitch": "-8Hz",
+    "chunk_count": 54
+  },
+  "output_file": "voiceover.wav",
+  "source_url": null,
+  "message": "Generated Edge TTS voiceover at /Users/xuguangchen/.codex/worktrees/c96a/Video Jianying/output/2026-03-27-lanterns-after-rain/voiceover.wav\nSegment count: 54"
+}

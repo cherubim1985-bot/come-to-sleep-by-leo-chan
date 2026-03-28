@@ -66,6 +66,16 @@ DEFAULT_CONFIG = {
             "channels": 1,
             "max_chunk_chars": 220,
         },
+        "edge_tts": {
+            "python_bin": ".venv-edge/bin/python",
+            "script_path": "tools/edge_tts_runner.py",
+            "temp_dir": "tmp/edge-tts",
+            "voice": "en-US-JennyNeural",
+            "rate": "-15%",
+            "volume": "+0%",
+            "pitch": "-8Hz",
+            "max_chunk_chars": 220,
+        },
         "volcengine": {
             "app_id": "",
             "access_key": "",
@@ -2170,6 +2180,106 @@ def generate_voice_via_say(bundle_dir: Path, config: dict, voice_request: dict) 
             message=f"macOS say 本地生成失败：{exc}",
         )
 
+def generate_voice_via_edge_tts(bundle_dir: Path, config: dict, voice_request: dict) -> GeneratedAssetResult:
+    voice = config.get("voice_clone", {})
+    edge_tts_config = voice.get("edge_tts", {})
+    python_bin = Path(str(edge_tts_config.get("python_bin", ".venv-edge/bin/python")))
+    script_path = Path(str(edge_tts_config.get("script_path", "tools/edge_tts_runner.py")))
+    temp_dir = Path(str(edge_tts_config.get("temp_dir", "tmp/edge-tts")))
+    voice_name = str(edge_tts_config.get("voice", "en-US-JennyNeural")).strip() or "en-US-JennyNeural"
+    rate = str(edge_tts_config.get("rate", "-15%")).strip() or "-15%"
+    volume = str(edge_tts_config.get("volume", "+0%")).strip() or "+0%"
+    pitch = str(edge_tts_config.get("pitch", "-8Hz")).strip() or "-8Hz"
+    max_chunk_chars = max(40, int(edge_tts_config.get("max_chunk_chars", 220)))
+
+    if not python_bin.exists():
+        return GeneratedAssetResult(
+            provider="edge_tts",
+            status="skipped",
+            request_payload=voice_request,
+            output_file=None,
+            source_url=None,
+            message=f"找不到 Edge TTS Python 环境：{python_bin}",
+        )
+    if not script_path.exists():
+        return GeneratedAssetResult(
+            provider="edge_tts",
+            status="skipped",
+            request_payload=voice_request,
+            output_file=None,
+            source_url=None,
+            message=f"找不到 Edge TTS runner 脚本：{script_path}",
+        )
+
+    raw_blocks = voice_request.get("spoken_blocks") if isinstance(voice_request.get("spoken_blocks"), list) else []
+    blocks = explode_spoken_blocks(raw_blocks, max_chunk_chars) if raw_blocks else [
+        {"text": text, "pause_after_ms": 0} for text in split_voice_text(str(voice_request["text"]), max_chunk_chars)
+    ]
+    if not blocks:
+        return GeneratedAssetResult(
+            provider="edge_tts",
+            status="failed",
+            request_payload={"voice": voice_name, "rate": rate},
+            output_file=None,
+            source_url=None,
+            message="没有可用于 Edge TTS 生成的文本片段。",
+        )
+
+    output_path = bundle_dir / Path(voice_request["expected_output_file"]).with_suffix(".wav").name
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    temp_run_dir = temp_dir / f"bundle-{bundle_dir.name}"
+    temp_run_dir.mkdir(parents=True, exist_ok=True)
+    blocks_path = temp_run_dir / "spoken_blocks.json"
+    blocks_path.write_text(json.dumps(blocks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    command = [
+        str(python_bin),
+        str(script_path),
+        "--blocks-file",
+        str(blocks_path),
+        "--output",
+        str(output_path),
+        "--temp-dir",
+        str(temp_run_dir),
+        "--voice",
+        voice_name,
+        f"--rate={rate}",
+        f"--volume={volume}",
+        f"--pitch={pitch}",
+    ]
+    try:
+        result = subprocess.run(command, check=True, capture_output=True, text=True)
+        return GeneratedAssetResult(
+            provider="edge_tts",
+            status="generated",
+            request_payload={
+                "command": command,
+                "voice": voice_name,
+                "rate": rate,
+                "volume": volume,
+                "pitch": pitch,
+                "chunk_count": len(blocks),
+            },
+            output_file=output_path.name,
+            source_url=None,
+            message=result.stdout.strip() or f"已通过 Edge TTS 生成旁白，共 {len(blocks)} 段。",
+        )
+    except subprocess.CalledProcessError as exc:
+        stderr = (exc.stderr or "").strip()
+        stdout = (exc.stdout or "").strip()
+        detail = stderr or stdout or str(exc)
+        return GeneratedAssetResult(
+            provider="edge_tts",
+            status="failed",
+            request_payload={
+                "command": command,
+                "voice": voice_name,
+                "chunk_count": len(blocks),
+            },
+            output_file=None,
+            source_url=None,
+            message=f"Edge TTS 生成失败：{detail}",
+        )
+
 
 def maybe_generate_voice(bundle_dir: Path, config: dict, voice_request: dict) -> GeneratedAssetResult:
     provider = str(config.get("voice_clone", {}).get("provider", "manual")).strip().lower()
@@ -2181,6 +2291,8 @@ def maybe_generate_voice(bundle_dir: Path, config: dict, voice_request: dict) ->
         return generate_voice_via_cosyvoice(bundle_dir, config, voice_request)
     if provider == "indextts_local":
         return generate_voice_via_indextts(bundle_dir, config, voice_request)
+    if provider == "edge_tts":
+        return generate_voice_via_edge_tts(bundle_dir, config, voice_request)
     if provider == "say_local":
         return generate_voice_via_say(bundle_dir, config, voice_request)
     return GeneratedAssetResult(

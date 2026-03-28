@@ -1,7 +1,20 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-03-22T22:08:45",
-  "session_count": 4,
+  "updated_at": "2026-03-27T20:05:00",
+  "session_count": 5,
   "sessions": [
+    {
+      "slug": "2026-03-27-lanterns-after-rain",
+      "date": "2026-03-27",
+      "title": "Lanterns After Rain",
+      "subtitle": "A warm voice-led night practice for the hour when the world has finally gone quiet again",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A warm voice-led night practice for the hour when the world has finally gone quiet again Best played in a quiet room while your breathing and body gradually soften.",
+      "mediaPath": "../output/2026-03-27-lanterns-after-rain/voiceover.mp3",
+      "posterPath": "../output/2026-03-27-lanterns-after-rain/cover.svg",
+      "coverTheme": "rain-cover"
+    },
     {
       "slug": "2026-03-22-the-empty-boat-2",
       "date": "2026-03-22",

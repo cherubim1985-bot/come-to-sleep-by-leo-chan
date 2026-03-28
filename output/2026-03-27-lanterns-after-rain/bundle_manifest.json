@@ -1,0 +1,42 @@
+{
+  "date": "2026-03-27",
+  "title": "Lanterns After Rain",
+  "subtitle": "A warm voice-led night practice for the hour when the world has finally gone quiet again",
+  "meditation_traditions": [],
+  "channel_name": "Daily Meditation",
+  "duration_minutes": 24,
+  "music_source": null,
+  "music_duration_hms": null,
+  "music_tags": [
+    "sleep",
+    "night",
+    "rain",
+    "warm"
+  ],
+  "music_selection_reason": "music_missing",
+  "music_generation_status": "manual",
+  "music_generation_message": "当前为手动模式，已生成 music_request.json。",
+  "voice_provider": "edge_tts",
+  "voice_generation_status": "generated",
+  "voice_generation_message": "Generated Edge TTS voiceover at /Users/xuguangchen/.codex/worktrees/c96a/Video Jianying/output/2026-03-27-lanterns-after-rain/voiceover.wav\nSegment count: 54",
+  "image_generation_status": "manual",
+  "image_generation_message": "当前为手动模式，已生成 image_request.json。",
+  "category": "Sleep Meditation",
+  "files": {
+    "cover": "cover.svg",
+    "fallback_cover": "cover.svg",
+    "image_prompt": "image_prompt.txt",
+    "image_request": "image_request.json",
+    "image_generation_result": "image_generation_result.json",
+    "music_prompt": "music_prompt.txt",
+    "music_request": "music_request.json",
+    "music_generation_result": "music_generation_result.json",
+    "voice_script": "voiceover_script.txt",
+    "voice_request": "voiceover_request.json",
+    "voice_generation_result": "voice_generation_result.json",
+    "voice_audio_expected": "voiceover.wav",
+    "voice_audio_mp3": "voiceover.mp3",
+    "final_audio_mix": null,
+    "captions": "captions.srt"
+  }
+}
