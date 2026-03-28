@@ -111,6 +111,38 @@ function renderMedia(session) {
   return `<div class="session-unavailable">This session is not ready to play yet.</div>`;
 }
 
+function renderSessionCover(session) {
+  const posterPath = resolvePosterPath(session);
+  const themeClass = escapeHtml(session.coverTheme || "warm-cover");
+
+  if (posterPath) {
+    return `
+      <div class="session-cover has-poster">
+        <img
+          class="session-cover-image"
+          src="${escapeHtml(posterPath)}"
+          alt="${escapeHtml(`${session.title} cover`)}"
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="session-cover-copy">
+          <span class="session-tag">${escapeHtml(session.kindLabel)}</span>
+          <h3>${escapeHtml(session.title)}</h3>
+          <p>${escapeHtml(session.subtitle)}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="session-cover ${themeClass}">
+      <span class="session-tag">${escapeHtml(session.kindLabel)}</span>
+      <h3>${escapeHtml(session.title)}</h3>
+      <p>${escapeHtml(session.subtitle)}</p>
+    </div>
+  `;
+}
+
 function setupTimedAudioLoop(audio) {
   if (audio.dataset.loopBound === "true") {
     return;
@@ -288,11 +320,7 @@ const normalizedSessions = sessions.filter((session) => {
     .map((session) => {
       return `
         <article class="session-card" data-kind="${escapeHtml(session.kind)}">
-          <div class="session-cover ${escapeHtml(session.coverTheme || "warm-cover")}">
-            <span class="session-tag">${escapeHtml(session.kindLabel)}</span>
-            <h3>${escapeHtml(session.title)}</h3>
-            <p>${escapeHtml(session.subtitle)}</p>
-          </div>
+          ${renderSessionCover(session)}
           <div class="session-body">
             <p class="session-meta">${escapeHtml(session.meta)}</p>
             ${renderMedia(session)}
