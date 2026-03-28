@@ -2291,17 +2291,22 @@ def maybe_generate_voice(bundle_dir: Path, config: dict, voice_request: dict) ->
         return generate_voice_via_cosyvoice(bundle_dir, config, voice_request)
     if provider == "indextts_local":
         return generate_voice_via_indextts(bundle_dir, config, voice_request)
-    if provider == "edge_tts":
-        return generate_voice_via_edge_tts(bundle_dir, config, voice_request)
-    if provider == "say_local":
-        return generate_voice_via_say(bundle_dir, config, voice_request)
+    if provider in {"edge_tts", "say_local", "manual", ""}:
+        return GeneratedAssetResult(
+            provider=provider or "manual",
+            status="failed",
+            request_payload=voice_request,
+            output_file=None,
+            source_url=None,
+            message="当前策略只允许使用你的克隆声音。已拒绝使用 fallback 或非克隆声音 provider。",
+        )
     return GeneratedAssetResult(
         provider=provider or "manual",
-        status="manual",
+        status="failed",
         request_payload=voice_request,
         output_file=None,
         source_url=None,
-        message="当前为手动模式，已生成 voiceover_request.json。",
+        message="当前策略只允许使用你的克隆声音。未识别或未配置可用的克隆音色 provider，因此本次直接失败，不使用任何其他声音。",
     )
 
 

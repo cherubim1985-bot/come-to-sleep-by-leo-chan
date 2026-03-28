@@ -8,7 +8,7 @@
   "caption_segment_seconds": 12,
   "chapter_minutes": 2,
   "voice_clone": {
-    "provider": "edge_tts",
+    "provider": "volcengine_v1",
     "voice_id": "replace-with-your-cloned-voice-id",
     "speaker_name": "My Clone Voice",
     "instructions": "温柔、稳定、慢速、贴近耳语但清晰。",
