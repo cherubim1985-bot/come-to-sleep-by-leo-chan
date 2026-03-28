@@ -12,7 +12,9 @@ window.SESSION_LIBRARY = {
       "meta": "Sleep Meditation · Rainy Night Atmosphere",
       "description": "A warm voice-led night practice for the hour when the world has finally gone quiet again Best played in a quiet room while your breathing and body gradually soften.",
       "mediaPath": "../output/2026-03-27-lanterns-after-rain-2/voiceover.mp3",
+      "publicMediaPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-27-lanterns-after-rain-2/voiceover.mp3",
       "posterPath": "../output/2026-03-27-lanterns-after-rain-2/cover.svg",
+      "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-27-lanterns-after-rain-2/cover.svg",
       "coverTheme": "warm-cover"
     },
     {
