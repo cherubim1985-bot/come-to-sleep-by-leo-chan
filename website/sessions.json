@@ -1,7 +1,22 @@
 {
-  "updated_at": "2026-03-27T22:01:59",
-  "session_count": 5,
+  "updated_at": "2026-03-27T22:56:31",
+  "session_count": 6,
   "sessions": [
+    {
+      "slug": "2026-03-28-snowlight-in-finland",
+      "date": "2026-03-28",
+      "title": "Snowlight In Finland",
+      "subtitle": "A northern winter night practice shaped by snowlight, timber warmth, and the hush of a Finnish cabin",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation",
+      "description": "A northern winter night practice shaped by snowlight, timber warmth, and the hush of a Finnish cabin Best played in a quiet room while your breathing and body gradually soften.",
+      "mediaPath": "../output/2026-03-28-snowlight-in-finland/voiceover.mp3",
+      "publicMediaPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-28-snowlight-in-finland/voiceover.mp3",
+      "posterPath": "../output/2026-03-28-snowlight-in-finland/2026-03-28-snowlight-in-finland-image.png",
+      "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-28-snowlight-in-finland/2026-03-28-snowlight-in-finland-image.png",
+      "coverTheme": "warm-cover"
+    },
     {
       "slug": "2026-03-27-lanterns-after-rain-2",
       "date": "2026-03-27",
