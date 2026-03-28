@@ -2968,7 +2968,7 @@ def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] |
     return json_path
 
 
-def sync_netlify_publish_dir(root: Path, config: dict) -> Path | None:
+def sync_cloudflare_pages_publish_dir(root: Path, config: dict) -> Path | None:
     website_dir = root / "website"
     sessions_path = website_dir / "sessions.json"
     if not website_dir.exists() or not sessions_path.exists():
@@ -2979,7 +2979,7 @@ def sync_netlify_publish_dir(root: Path, config: dict) -> Path | None:
     publishing = config.get("publishing", {}) if isinstance(config.get("publishing"), dict) else {}
     copy_media_to_deploy = bool(publishing.get("copy_media_to_deploy", True))
     media_base_url = normalize_media_base_url(config)
-    deploy_dir = root / "deploy" / "netlify-site"
+    deploy_dir = root / "deploy" / "cloudflare-pages"
     deploy_output_dir = deploy_dir / "output"
 
     deploy_dir.mkdir(parents=True, exist_ok=True)
@@ -3025,17 +3025,17 @@ def sync_netlify_publish_dir(root: Path, config: dict) -> Path | None:
             [
                 "come to sleep by Leo Chan",
                 "",
-                "This folder is the ready-to-upload Netlify package.",
+                "This folder is the ready-to-upload Cloudflare Pages package.",
                 "",
                 "How it updates:",
                 "- Every time `daily_meditation_pipeline.py` generates a new session, this folder is refreshed automatically.",
-                "- Netlify should use this folder as the publish directory.",
+                "- Cloudflare Pages should use this folder as the build output directory.",
                 f"- External media base URL: {media_base_url or 'not set'}",
                 f"- Copy media into deploy output: {'yes' if copy_media_to_deploy else 'no'}",
                 "",
-                "Recommended Netlify setup:",
+                "Recommended Cloudflare Pages setup:",
                 "- Build command: leave empty",
-                "- Publish directory: deploy/netlify-site",
+                "- Build output directory: deploy/cloudflare-pages",
                 "",
                 "Current bundles included:",
                 *[f"- {bundle_name}" for bundle_name in sorted(copied_bundles)],
@@ -3048,41 +3048,7 @@ def sync_netlify_publish_dir(root: Path, config: dict) -> Path | None:
         encoding="utf-8",
     )
 
-    netlify_toml = root / "netlify.toml"
-    netlify_toml.write_text(
-        "\n".join(
-            [
-                "[build]",
-                '  publish = "deploy/netlify-site"',
-                "",
-            ]
-        ),
-        encoding="utf-8",
-    )
-
     return deploy_dir
-
-
-def sync_cloudflare_publish_dir(root: Path) -> Path | None:
-    netlify_dir = root / "deploy" / "netlify-site"
-    if not netlify_dir.exists():
-        return None
-
-    cloudflare_dir = root / "deploy" / "cloudflare-pages"
-    if cloudflare_dir.exists():
-        shutil.rmtree(cloudflare_dir)
-    shutil.copytree(netlify_dir, cloudflare_dir)
-
-    readme_path = cloudflare_dir / "README.md"
-    if readme_path.exists():
-        content = readme_path.read_text(encoding="utf-8")
-        content = content.replace("ready-to-upload Netlify package", "ready-to-upload Cloudflare Pages package")
-        content = content.replace("- Netlify should use this folder as the publish directory.", "- Cloudflare Pages can use this folder for direct upload.")
-        content = content.replace("Recommended Netlify setup:", "Recommended Cloudflare Pages setup:")
-        content = content.replace("- Publish directory: deploy/netlify-site", "- Build output directory: deploy/netlify-site")
-        readme_path.write_text(content, encoding="utf-8")
-
-    return cloudflare_dir
 
 
 def parse_args() -> argparse.Namespace:
@@ -3116,8 +3082,7 @@ def main() -> int:
     website_payload = load_json(root / "website" / "sessions.json", {})
     sessions = website_payload.get("sessions", []) if isinstance(website_payload.get("sessions"), list) else []
     uploaded_keys = upload_assets_to_r2(root, sessions, r2_config)
-    deploy_path = sync_netlify_publish_dir(root, config)
-    cloudflare_path = sync_cloudflare_publish_dir(root)
+    deploy_path = sync_cloudflare_pages_publish_dir(root, config)
 
     print(f"Created daily meditation bundle: {bundle_dir}")
     print(f"Theme: {theme['name']}")
@@ -3131,9 +3096,7 @@ def main() -> int:
     if uploaded_keys:
         print(f"Uploaded {len(uploaded_keys)} asset(s) to R2.")
     if deploy_path:
-        print(f"Netlify publish dir synced: {deploy_path}")
-    if cloudflare_path:
-        print(f"Cloudflare Pages package synced: {cloudflare_path}")
+        print(f"Cloudflare Pages package synced: {deploy_path}")
     return 0
 
 

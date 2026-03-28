@@ -55,7 +55,7 @@ python3 daily_meditation_pipeline.py --date 2026-03-15
 - `voice_clone.speaker_name`
 - `voice_clone.instructions`
 
-当前默认已经切到 `volcengine_v1`，但在你填好火山引擎参数之前，脚本仍会先生成 `voiceover_request.json` 作为兜底。
+当前默认已经切到 `volcengine_v1`。如果克隆声音链路不可用，脚本现在会直接失败，不再回退到其他声音。
 
 如果你要直接使用火山引擎：
 
@@ -184,3 +184,14 @@ python3 daily_meditation_pipeline.py --date 2026-03-15
 - [launchd/com.xuguangchen.daily-meditation.plist](/Users/xuguangchen/Library/CloudStorage/OneDrive-TulaneUniversity/Video Jianying/launchd/com.xuguangchen.daily-meditation.plist)
 
 默认每天早上 8:00 运行一次。你可以按需调整。
+
+## 网站发布
+
+网站发布目录现在只保留 Cloudflare Pages 版本：
+
+- 发布输出目录：`deploy/cloudflare-pages`
+- 站点域名：`https://come-to-sleep-by-leo-chan.pages.dev/`
+- `daily_meditation_pipeline.py` 每次生成后都会直接刷新这个目录
+- `publish_sleep_site.sh` 提交并推送后，由 Cloudflare Pages 从 GitHub 自动重新部署
+
+仓库里不再保留 `netlify` 命名的发布目录或配置，避免平台混淆。
