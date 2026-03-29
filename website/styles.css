@@ -94,7 +94,6 @@ h3 {
 .session-description,
 .section-lead,
 .hero-note,
-.benefit-card p,
 .membership-list li,
 .library-status {
   color: var(--muted);
@@ -165,7 +164,6 @@ h3 {
 .session-description,
 .section-lead,
 .hero-note,
-.benefit-card p,
 .membership-list li {
   line-height: 1.75;
 }
@@ -221,7 +219,7 @@ h3 {
 }
 
 .button-secondary,
-.filter-button {
+.journey-button {
   color: var(--muted);
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
@@ -230,9 +228,7 @@ h3 {
 .hero-media,
 .featured-card,
 .contact-card,
-.offer-card,
 .ritual-grid article,
-.benefit-card,
 .membership-card,
 .portrait-placeholder,
 .session-card {
@@ -301,7 +297,6 @@ h3 {
 
 .ritual-grid,
 .featured-grid,
-.benefit-grid,
 .membership-grid {
   display: grid;
   gap: 16px;
@@ -311,21 +306,18 @@ h3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.benefit-grid,
 .membership-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .ritual-grid article {
   padding: 22px;
 }
 
-.benefit-card,
 .membership-card {
   padding: 22px;
 }
 
-.benefit-label,
 .membership-tier {
   margin: 0 0 10px;
   font-size: 0.75rem;
@@ -399,12 +391,6 @@ h3 {
     linear-gradient(160deg, #22344c, #132030 58%, #0d1521);
 }
 
-.filter-group {
-  display: flex;
-  gap: 10px;
-}
-
-.filter-button,
 .journey-button {
   min-height: 42px;
   padding: 0 14px;
@@ -412,7 +398,6 @@ h3 {
   cursor: pointer;
 }
 
-.filter-button.active,
 .journey-button.active {
   color: #101826;
   background: linear-gradient(135deg, #eddabc, #cfa571);
@@ -565,25 +550,6 @@ audio {
   padding: 22px;
 }
 
-.offer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 18px;
-}
-
-.offer-card {
-  padding: 18px;
-}
-
-.offer-label {
-  margin: 0 0 8px;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 @media (max-width: 980px) {
   .site-header,
   .hero,
@@ -600,9 +566,7 @@ audio {
 
   .ritual-grid,
   .featured-grid,
-  .benefit-grid,
   .membership-grid,
-  .offer-grid,
   .session-grid {
     grid-template-columns: 1fr;
   }
