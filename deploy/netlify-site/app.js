@@ -1,4 +1,5 @@
 const filterButtons = document.querySelectorAll(".filter-button");
+const journeyButtons = document.querySelectorAll(".journey-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
 const heroSessionImage = document.querySelector("#hero-session-image");
@@ -12,6 +13,7 @@ const GA_MEASUREMENT_ID = String(SITE_CONFIG.gaMeasurementId || "").trim();
 const MEDIA_BASE_URL = String(SITE_CONFIG.mediaBaseUrl || "").trim().replace(/\/+$/, "");
 
 let activeFilter = "all";
+let activeJourney = "all";
 let gaReady = false;
 
 function loadGa4() {
@@ -114,6 +116,14 @@ function renderMedia(session) {
 function renderSessionCover(session) {
   const posterPath = resolvePosterPath(session);
   const themeClass = escapeHtml(session.coverTheme || "warm-cover");
+  const seriesLabel = String(session.series || "").trim();
+  const bestForLabel = String(session.bestForLabel || "").trim();
+  const metaBadges = `
+    <div class="session-overlay-meta">
+      ${seriesLabel ? `<span class="session-tag session-tag-secondary">${escapeHtml(seriesLabel)}</span>` : ""}
+      ${bestForLabel ? `<span class="session-tag">${escapeHtml(bestForLabel)}</span>` : ""}
+    </div>
+  `;
 
   if (posterPath) {
     return `
@@ -126,7 +136,7 @@ function renderSessionCover(session) {
           decoding="async"
         />
         <div class="session-cover-copy">
-          <span class="session-tag">${escapeHtml(session.kindLabel)}</span>
+          ${metaBadges}
           <h3>${escapeHtml(session.title)}</h3>
           <p>${escapeHtml(session.subtitle)}</p>
         </div>
@@ -136,11 +146,20 @@ function renderSessionCover(session) {
 
   return `
     <div class="session-cover ${themeClass}">
-      <span class="session-tag">${escapeHtml(session.kindLabel)}</span>
+      ${metaBadges}
       <h3>${escapeHtml(session.title)}</h3>
       <p>${escapeHtml(session.subtitle)}</p>
     </div>
   `;
+}
+
+function matchesJourney(session) {
+  if (activeJourney === "all") {
+    return true;
+  }
+  const tags = Array.isArray(session.bestFor) ? session.bestFor.map((item) => String(item).trim().toLowerCase()) : [];
+  const seriesSlug = String(session.seriesSlug || "").trim().toLowerCase();
+  return tags.includes(activeJourney) || seriesSlug === activeJourney;
 }
 
 function setupTimedAudioLoop(audio) {
@@ -307,7 +326,8 @@ const normalizedSessions = sessions.filter((session) => {
   updateHeroSession(normalizedSessions);
 
   const filteredSessions = normalizedSessions.filter((session) => {
-    return activeFilter === "all" || session.kind === activeFilter;
+    const matchesKind = activeFilter === "all" || session.kind === activeFilter;
+    return matchesKind && matchesJourney(session);
   });
 
   if (!filteredSessions.length) {
@@ -322,7 +342,10 @@ const normalizedSessions = sessions.filter((session) => {
         <article class="session-card" data-kind="${escapeHtml(session.kind)}">
           ${renderSessionCover(session)}
           <div class="session-body">
-            <p class="session-meta">${escapeHtml(session.meta)}</p>
+            <div class="session-card-meta">
+              <p class="session-meta">${escapeHtml(session.meta)}</p>
+              ${session.series ? `<p class="session-series">Series: ${escapeHtml(session.series)}</p>` : ""}
+            </div>
             ${renderMedia(session)}
             <p class="session-description">${escapeHtml(session.description)}</p>
           </div>
@@ -332,7 +355,7 @@ const normalizedSessions = sessions.filter((session) => {
     .join("");
 
   bindAudioLoops();
-  libraryStatus.textContent = `${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} available.`;
+  libraryStatus.textContent = `${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} available for this kind of night.`;
 }
 
 async function loadSessions() {
@@ -349,6 +372,15 @@ filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.filter || "all";
     filterButtons.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    loadSessions();
+  });
+});
+
+journeyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeJourney = button.dataset.journey || "all";
+    journeyButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
     loadSessions();
   });

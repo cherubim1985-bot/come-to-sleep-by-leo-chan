@@ -404,17 +404,32 @@ h3 {
   gap: 10px;
 }
 
-.filter-button {
+.filter-button,
+.journey-button {
   min-height: 42px;
   padding: 0 14px;
   border-radius: 999px;
   cursor: pointer;
 }
 
-.filter-button.active {
+.filter-button.active,
+.journey-button.active {
   color: #101826;
   background: linear-gradient(135deg, #eddabc, #cfa571);
   border-color: transparent;
+}
+
+.journey-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.journey-button {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .session-grid {
@@ -497,6 +512,17 @@ h3 {
   font-size: 0.8rem;
 }
 
+.session-overlay-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.session-tag-secondary {
+  background: rgba(215, 185, 143, 0.18);
+  color: #f7e9ce;
+}
+
 .session-cover p,
 .session-meta {
   margin: 0;
@@ -507,9 +533,20 @@ h3 {
   padding: 18px 20px 22px;
 }
 
+.session-card-meta {
+  display: grid;
+  gap: 6px;
+}
+
 .session-meta {
   font-size: 0.9rem;
   color: var(--accent);
+}
+
+.session-series {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(244, 239, 231, 0.72);
 }
 
 video,

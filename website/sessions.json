@@ -15,7 +15,14 @@
       "publicMediaPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-28-snowlight-in-finland/voiceover.mp3",
       "posterPath": "../output/2026-03-28-snowlight-in-finland/2026-03-28-snowlight-in-finland-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-28-snowlight-in-finland/2026-03-28-snowlight-in-finland-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "World Nights",
+      "seriesSlug": "world-nights",
+      "bestFor": [
+        "emotional",
+        "world-nights"
+      ],
+      "bestForLabel": "Tender nights, winter stillness"
     },
     {
       "slug": "2026-03-27-lanterns-after-rain-2",
@@ -30,7 +37,14 @@
       "publicMediaPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-27-lanterns-after-rain-2/voiceover.mp3",
       "posterPath": "../output/2026-03-27-lanterns-after-rain-2/2026-03-27-lanterns-after-rain-2-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-27-lanterns-after-rain-2/2026-03-27-lanterns-after-rain-2-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "World Nights",
+      "seriesSlug": "world-nights",
+      "bestFor": [
+        "emotional",
+        "world-nights"
+      ],
+      "bestForLabel": "Tender nights, rainy evenings"
     },
     {
       "slug": "2026-03-22-the-empty-boat-2",
@@ -45,7 +59,13 @@
       "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-22-the-empty-boat-2/voiceover.mp3",
       "posterPath": "../output/2026-03-22-the-empty-boat-2/2026-03-22-the-empty-boat-2-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-22-the-empty-boat-2/2026-03-22-the-empty-boat-2-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "Zen Nights",
+      "seriesSlug": "zen-nights",
+      "bestFor": [
+        "overthinking"
+      ],
+      "bestForLabel": "Overthinking, mental drift"
     },
     {
       "slug": "2026-03-22-after-the-mind-lets-go-3",
@@ -60,7 +80,13 @@
       "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-22-after-the-mind-lets-go-3/voiceover.mp3",
       "posterPath": "../output/2026-03-22-after-the-mind-lets-go-3/2026-03-22-after-the-mind-lets-go-3-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-22-after-the-mind-lets-go-3/2026-03-22-after-the-mind-lets-go-3-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "Overthinking Nights",
+      "seriesSlug": "overthinking-nights",
+      "bestFor": [
+        "overthinking"
+      ],
+      "bestForLabel": "Overthinking at bedtime"
     },
     {
       "slug": "2026-03-19-the-quiet-room",
@@ -75,7 +101,13 @@
       "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-19-the-quiet-room/voiceover.mp3",
       "posterPath": "../output/2026-03-19-the-quiet-room/2026-03-19-the-quiet-room-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-19-the-quiet-room/2026-03-19-the-quiet-room-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "Tender Nights",
+      "seriesSlug": "tender-nights",
+      "bestFor": [
+        "emotional"
+      ],
+      "bestForLabel": "Emotionally full evenings"
     },
     {
       "slug": "2026-03-19-still-waters-at-night-2",
@@ -90,7 +122,13 @@
       "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-03-19-still-waters-at-night-2/voiceover.mp3",
       "posterPath": "../output/2026-03-19-still-waters-at-night-2/2026-03-19-still-waters-at-night-2-image.png",
       "publicPosterPath": "https://come-to-sleep-by-leo-chan.pages.dev/output/2026-03-19-still-waters-at-night-2/2026-03-19-still-waters-at-night-2-image.png",
-      "coverTheme": "warm-cover"
+      "coverTheme": "warm-cover",
+      "series": "Back To Sleep",
+      "seriesSlug": "night-waking",
+      "bestFor": [
+        "night-waking"
+      ],
+      "bestForLabel": "Night waking, gentle unwind"
     }
   ]
 }
