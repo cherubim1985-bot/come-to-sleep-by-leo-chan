@@ -366,6 +366,26 @@ h3 {
   line-height: 1.75;
 }
 
+.path-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.path-preview-card {
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.path-preview-copy {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
 .ritual-grid span {
   display: inline-flex;
   width: 38px;
@@ -678,7 +698,8 @@ audio {
   .ritual-grid,
   .featured-grid,
   .membership-grid,
-  .session-grid {
+  .session-grid,
+  .path-preview-grid {
     grid-template-columns: 1fr;
   }
 
