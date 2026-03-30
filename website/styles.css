@@ -364,6 +364,10 @@ h3 {
   margin-top: 18px;
 }
 
+.membership-button.button-primary {
+  align-self: flex-start;
+}
+
 .membership-note {
   margin-top: 16px;
   padding: 18px 20px;

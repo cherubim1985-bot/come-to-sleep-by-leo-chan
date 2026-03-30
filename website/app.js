@@ -31,25 +31,25 @@ const JOURNEY_DETAILS = {
     title: "Start anywhere.",
     description:
       "If you are not sure what you need, begin with the latest session and notice whether your body wants softness, steadiness, or a little more space.",
-    note: "Member path coming soon: 7 Nights for Overthinking.",
+    note: "If one kind of night keeps repeating, a deeper path will help more than random listening.",
   },
   overthinking: {
     title: "For nights when the mind keeps working.",
     description:
       "Choose these when thought is still active, bedtime feels mentally loud, and you need a slower way to stop following every loop.",
-    note: "Planned member path: 7 Nights for Overthinking.",
+    note: "If this is your usual bedtime pattern, a deeper overthinking path is coming.",
   },
   "night-waking": {
     title: "For 2am and 3am waking.",
     description:
       "Choose these when you are already awake and do not want stimulation, advice, or effort. The goal is not productivity. It is a gentler return to sleep.",
-    note: "Planned member path: Back To Sleep at 3am.",
+    note: "If this keeps happening, a deeper back-to-sleep path will help more than switching around.",
   },
   "world-nights": {
     title: "For nights when atmosphere helps first.",
     description:
       "Choose these when the nervous system needs a softer place to land. The setting does part of the work before the words even begin.",
-    note: "Planned member path: World Nights Collection.",
+    note: "If atmosphere is what helps most, longer-form world-night guidance is on the way.",
   },
 };
 
