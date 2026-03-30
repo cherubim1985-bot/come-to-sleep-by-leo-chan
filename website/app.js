@@ -1,6 +1,9 @@
 const journeyButtons = document.querySelectorAll(".journey-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
+const journeyContextTitle = document.querySelector("#journey-context-title");
+const journeyContextDescription = document.querySelector("#journey-context-description");
+const journeyContextNote = document.querySelector("#journey-context-note");
 const heroSessionImage = document.querySelector("#hero-session-image");
 const heroSessionTitle = document.querySelector("#hero-session-title");
 const heroSessionSubtitle = document.querySelector("#hero-session-subtitle");
@@ -19,6 +22,33 @@ const JOURNEY_COPY = {
   overthinking: "Start here if the mind is still busy and bedtime feels mentally loud.",
   "night-waking": "Start here if you woke up in the night and want a gentler way back to sleep.",
   "world-nights": "Start here if you want atmosphere first: a softer place for the mind to land.",
+};
+
+const JOURNEY_DETAILS = {
+  all: {
+    title: "Start anywhere.",
+    description:
+      "If you are not sure what you need, begin with the latest session and notice whether your body wants softness, steadiness, or a little more space.",
+    note: "Member path coming soon: 7 Nights for Overthinking.",
+  },
+  overthinking: {
+    title: "For nights when the mind keeps working.",
+    description:
+      "Choose these when thought is still active, bedtime feels mentally loud, and you need a slower way to stop following every loop.",
+    note: "Planned member path: 7 Nights for Overthinking.",
+  },
+  "night-waking": {
+    title: "For 2am and 3am waking.",
+    description:
+      "Choose these when you are already awake and do not want stimulation, advice, or effort. The goal is not productivity. It is a gentler return to sleep.",
+    note: "Planned member path: Back To Sleep at 3am.",
+  },
+  "world-nights": {
+    title: "For nights when atmosphere helps first.",
+    description:
+      "Choose these when the nervous system needs a softer place to land. The setting does part of the work before the words even begin.",
+    note: "Planned member path: World Nights Collection.",
+  },
 };
 
 function loadGa4() {
@@ -165,6 +195,19 @@ function matchesJourney(session) {
   const tags = Array.isArray(session.bestFor) ? session.bestFor.map((item) => String(item).trim().toLowerCase()) : [];
   const seriesSlug = String(session.seriesSlug || "").trim().toLowerCase();
   return tags.includes(activeJourney) || seriesSlug === activeJourney;
+}
+
+function updateJourneyContext() {
+  const details = JOURNEY_DETAILS[activeJourney] || JOURNEY_DETAILS.all;
+  if (journeyContextTitle) {
+    journeyContextTitle.textContent = details.title;
+  }
+  if (journeyContextDescription) {
+    journeyContextDescription.textContent = details.description;
+  }
+  if (journeyContextNote) {
+    journeyContextNote.textContent = details.note;
+  }
 }
 
 function setupTimedAudioLoop(audio) {
@@ -329,6 +372,7 @@ function renderSessions(sessions) {
   });
 
   updateHeroSession(normalizedSessions);
+  updateJourneyContext();
 
   const filteredSessions = normalizedSessions.filter((session) => {
     return matchesJourney(session);
