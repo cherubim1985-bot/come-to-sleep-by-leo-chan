@@ -1,4 +1,3 @@
-const filterButtons = document.querySelectorAll(".filter-button");
 const journeyButtons = document.querySelectorAll(".journey-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
@@ -12,9 +11,15 @@ const SITE_CONFIG = window.SITE_CONFIG || {};
 const GA_MEASUREMENT_ID = String(SITE_CONFIG.gaMeasurementId || "").trim();
 const MEDIA_BASE_URL = String(SITE_CONFIG.mediaBaseUrl || "").trim().replace(/\/+$/, "");
 
-let activeFilter = "all";
 let activeJourney = "all";
 let gaReady = false;
+
+const JOURNEY_COPY = {
+  all: "Start anywhere. These are the sessions most likely to help tonight.",
+  overthinking: "Start here if the mind is still busy and bedtime feels mentally loud.",
+  "night-waking": "Start here if you woke up in the night and want a gentler way back to sleep.",
+  "world-nights": "Start here if you want atmosphere first: a softer place for the mind to land.",
+};
 
 function loadGa4() {
   if (!GA_MEASUREMENT_ID || gaReady) {
@@ -318,21 +323,20 @@ function updateHeroSession(sessions) {
 }
 
 function renderSessions(sessions) {
-const normalizedSessions = sessions.filter((session) => {
-  const mediaPath = resolveMediaPath(session).toLowerCase();
-  return session.kind === "audio" && mediaPath.endsWith(".mp3");
-});
+  const normalizedSessions = sessions.filter((session) => {
+    const mediaPath = resolveMediaPath(session).toLowerCase();
+    return session.kind === "audio" && mediaPath.endsWith(".mp3");
+  });
 
   updateHeroSession(normalizedSessions);
 
   const filteredSessions = normalizedSessions.filter((session) => {
-    const matchesKind = activeFilter === "all" || session.kind === activeFilter;
-    return matchesKind && matchesJourney(session);
+    return matchesJourney(session);
   });
 
   if (!filteredSessions.length) {
     sessionGrid.innerHTML = "";
-    libraryStatus.textContent = "There are no sessions in this category yet.";
+    libraryStatus.textContent = "There are no sessions in this path yet.";
     return;
   }
 
@@ -355,7 +359,8 @@ const normalizedSessions = sessions.filter((session) => {
     .join("");
 
   bindAudioLoops();
-  libraryStatus.textContent = `${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} available for this kind of night.`;
+  const lead = JOURNEY_COPY[activeJourney] || JOURNEY_COPY.all;
+  libraryStatus.textContent = `${lead} ${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} available.`;
 }
 
 async function loadSessions() {
@@ -367,15 +372,6 @@ async function loadSessions() {
     libraryStatus.textContent = "The session library is unavailable right now. Run the sync again to refresh this space.";
   }
 }
-
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activeFilter = button.dataset.filter || "all";
-    filterButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    loadSessions();
-  });
-});
 
 journeyButtons.forEach((button) => {
   button.addEventListener("click", () => {
