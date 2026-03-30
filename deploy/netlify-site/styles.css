@@ -297,7 +297,9 @@ h3 {
 
 .ritual-grid,
 .featured-grid,
-.membership-grid {
+.membership-grid,
+.how-grid,
+.trust-grid {
   display: grid;
   gap: 16px;
 }
@@ -310,11 +312,21 @@ h3 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.how-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.trust-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .ritual-grid article {
   padding: 22px;
 }
 
-.membership-card {
+.membership-card,
+.how-card,
+.trust-card {
   padding: 22px;
 }
 
@@ -362,6 +374,33 @@ h3 {
 
 .membership-note p {
   margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.how-card,
+.trust-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.how-card span {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #eddabc, #cfa571);
+  color: #101826;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.how-card p,
+.trust-card p {
+  margin: 10px 0 0;
   color: var(--muted);
   line-height: 1.75;
 }
@@ -699,7 +738,9 @@ audio {
   .featured-grid,
   .membership-grid,
   .session-grid,
-  .path-preview-grid {
+  .path-preview-grid,
+  .how-grid,
+  .trust-grid {
     grid-template-columns: 1fr;
   }
 
