@@ -1,6 +1,7 @@
 const journeyButtons = document.querySelectorAll(".journey-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
+const librarySection = document.querySelector("#library");
 const journeyContextTitle = document.querySelector("#journey-context-title");
 const journeyContextDescription = document.querySelector("#journey-context-description");
 const journeyContextNote = document.querySelector("#journey-context-note");
@@ -208,6 +209,21 @@ function updateJourneyContext() {
   if (journeyContextNote) {
     journeyContextNote.textContent = details.note;
   }
+}
+
+function focusLibraryResults() {
+  if (!librarySection) {
+    return;
+  }
+
+  librarySection.classList.remove("library-section-active");
+  librarySection.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.requestAnimationFrame(() => {
+    librarySection.classList.add("library-section-active");
+  });
+  window.setTimeout(() => {
+    librarySection.classList.remove("library-section-active");
+  }, 2200);
 }
 
 function setupTimedAudioLoop(audio) {
@@ -423,6 +439,7 @@ journeyButtons.forEach((button) => {
     journeyButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
     loadSessions();
+    focusLibraryResults();
   });
 });
 
