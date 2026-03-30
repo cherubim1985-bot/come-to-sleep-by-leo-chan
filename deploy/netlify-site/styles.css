@@ -450,6 +450,60 @@ h3 {
   text-transform: none;
 }
 
+.library-focus {
+  margin-bottom: 18px;
+  padding: 20px 22px;
+  border: 1px solid rgba(215, 185, 143, 0.18);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(20, 31, 49, 0.92), rgba(12, 18, 31, 0.9)),
+    linear-gradient(145deg, rgba(215, 185, 143, 0.08), transparent 42%);
+  box-shadow: inset 0 0 0 1px rgba(215, 185, 143, 0.08);
+}
+
+.library-focus-label,
+.library-focus-kicker {
+  margin: 0;
+  color: var(--accent);
+}
+
+.library-focus-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.library-focus-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+  margin-top: 12px;
+}
+
+.library-focus-copy h3 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.library-focus-kicker {
+  font-size: 0.95rem;
+}
+
+.library-focus-description {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.library-focus-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: end;
+}
+
 .session-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -602,6 +656,15 @@ audio {
   .membership-grid,
   .session-grid {
     grid-template-columns: 1fr;
+  }
+
+  .library-focus-body {
+    display: grid;
+    align-items: start;
+  }
+
+  .library-focus-meta {
+    justify-content: start;
   }
 }
 

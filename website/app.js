@@ -1,6 +1,7 @@
 const journeyButtons = document.querySelectorAll(".journey-button");
 const sessionGrid = document.querySelector("#session-grid");
 const libraryStatus = document.querySelector("#library-status");
+const libraryFocus = document.querySelector("#library-focus");
 const journeyContextTitle = document.querySelector("#journey-context-title");
 const journeyContextDescription = document.querySelector("#journey-context-description");
 const journeyContextNote = document.querySelector("#journey-context-note");
@@ -48,6 +49,29 @@ const JOURNEY_DETAILS = {
     description:
       "Choose these when the nervous system needs a softer place to land. The setting does part of the work before the words even begin.",
     note: "Planned member path: World Nights Collection.",
+  },
+};
+
+const JOURNEY_RECOMMENDATIONS = {
+  all: {
+    slug: "2026-03-28-snowlight-in-finland",
+    label: "A gentle place to begin tonight.",
+    reason: "Start with the newest session if you want one calm place to land without deciding too much.",
+  },
+  overthinking: {
+    slug: "2026-03-22-after-the-mind-lets-go-3",
+    label: "Best first listen for a busy mind.",
+    reason: "This is the clearest entry point when bedtime feels mentally loud and you need less inner momentum.",
+  },
+  "night-waking": {
+    slug: "2026-03-19-still-waters-at-night-2",
+    label: "Best first listen after waking in the night.",
+    reason: "This one is steadier and simpler, which helps when you want to return to sleep without effort or stimulation.",
+  },
+  "world-nights": {
+    slug: "2026-03-28-snowlight-in-finland",
+    label: "Best first listen if atmosphere helps first.",
+    reason: "This one lets setting and temperature do part of the calming before the guidance even starts.",
   },
 };
 
@@ -195,6 +219,40 @@ function matchesJourney(session) {
   const tags = Array.isArray(session.bestFor) ? session.bestFor.map((item) => String(item).trim().toLowerCase()) : [];
   const seriesSlug = String(session.seriesSlug || "").trim().toLowerCase();
   return tags.includes(activeJourney) || seriesSlug === activeJourney;
+}
+
+function rankSessionForJourney(session) {
+  const recommendation = JOURNEY_RECOMMENDATIONS[activeJourney];
+  if (recommendation && session.slug === recommendation.slug) {
+    return 0;
+  }
+  return 1;
+}
+
+function renderLibraryFocus(session) {
+  if (!libraryFocus || !session) {
+    return;
+  }
+
+  const recommendation = JOURNEY_RECOMMENDATIONS[activeJourney] || JOURNEY_RECOMMENDATIONS.all;
+  const seriesLabel = String(session.series || "").trim();
+  const bestForLabel = String(session.bestForLabel || "").trim();
+
+  libraryFocus.hidden = false;
+  libraryFocus.innerHTML = `
+    <p class="library-focus-label">Best First Listen</p>
+    <div class="library-focus-body">
+      <div class="library-focus-copy">
+        <p class="library-focus-kicker">${escapeHtml(recommendation.label)}</p>
+        <h3>${escapeHtml(session.title)}</h3>
+        <p class="library-focus-description">${escapeHtml(recommendation.reason)}</p>
+      </div>
+      <div class="library-focus-meta">
+        ${seriesLabel ? `<span class="session-tag session-tag-secondary">${escapeHtml(seriesLabel)}</span>` : ""}
+        ${bestForLabel ? `<span class="session-tag">${escapeHtml(bestForLabel)}</span>` : ""}
+      </div>
+    </div>
+  `;
 }
 
 function updateJourneyContext() {
@@ -374,20 +432,34 @@ function renderSessions(sessions) {
   updateHeroSession(normalizedSessions);
   updateJourneyContext();
 
-  const filteredSessions = normalizedSessions.filter((session) => {
-    return matchesJourney(session);
-  });
+  const filteredSessions = normalizedSessions
+    .filter((session) => {
+      return matchesJourney(session);
+    })
+    .sort((left, right) => {
+      const rankDifference = rankSessionForJourney(left) - rankSessionForJourney(right);
+      if (rankDifference !== 0) {
+        return rankDifference;
+      }
+      return String(right.date || "").localeCompare(String(left.date || ""));
+    });
 
   if (!filteredSessions.length) {
+    if (libraryFocus) {
+      libraryFocus.hidden = true;
+      libraryFocus.innerHTML = "";
+    }
     sessionGrid.innerHTML = "";
     libraryStatus.textContent = "There are no sessions in this path yet.";
     return;
   }
 
+  renderLibraryFocus(filteredSessions[0]);
+
   sessionGrid.innerHTML = filteredSessions
     .map((session) => {
       return `
-        <article class="session-card" data-kind="${escapeHtml(session.kind)}">
+        <article class="session-card" data-kind="${escapeHtml(session.kind)}" id="session-${escapeHtml(session.slug || "")}">
           ${renderSessionCover(session)}
           <div class="session-body">
             <div class="session-card-meta">
@@ -404,7 +476,7 @@ function renderSessions(sessions) {
 
   bindAudioLoops();
   const lead = JOURNEY_COPY[activeJourney] || JOURNEY_COPY.all;
-  libraryStatus.textContent = `${lead} ${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} available.`;
+  libraryStatus.textContent = `${lead} ${filteredSessions.length} gentle session${filteredSessions.length === 1 ? "" : "s"} ready tonight.`;
 }
 
 async function loadSessions() {
