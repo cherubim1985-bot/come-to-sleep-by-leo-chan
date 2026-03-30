@@ -533,6 +533,52 @@ h3 {
   text-transform: none;
 }
 
+.journey-plan {
+  margin-top: 16px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.journey-plan-label,
+.journey-plan-step {
+  margin: 0;
+  color: var(--accent);
+}
+
+.journey-plan-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.journey-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.journey-plan-card {
+  padding: 16px 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(10, 16, 28, 0.34);
+}
+
+.journey-plan-step {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.journey-plan-text {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 .library-focus {
   margin-bottom: 18px;
   padding: 20px 22px;
@@ -740,7 +786,8 @@ audio {
   .session-grid,
   .path-preview-grid,
   .how-grid,
-  .trust-grid {
+  .trust-grid,
+  .journey-plan-grid {
     grid-template-columns: 1fr;
   }
 

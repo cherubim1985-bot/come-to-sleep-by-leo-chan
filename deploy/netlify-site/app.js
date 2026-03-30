@@ -5,6 +5,7 @@ const libraryFocus = document.querySelector("#library-focus");
 const journeyContextTitle = document.querySelector("#journey-context-title");
 const journeyContextDescription = document.querySelector("#journey-context-description");
 const journeyContextNote = document.querySelector("#journey-context-note");
+const journeyPlanGrid = document.querySelector("#journey-plan-grid");
 const heroSessionImage = document.querySelector("#hero-session-image");
 const heroSessionTitle = document.querySelector("#hero-session-title");
 const heroSessionSubtitle = document.querySelector("#hero-session-subtitle");
@@ -73,6 +74,65 @@ const JOURNEY_RECOMMENDATIONS = {
     label: "Best first listen if atmosphere helps first.",
     reason: "This one lets setting and temperature do part of the calming before the guidance even starts.",
   },
+};
+
+const JOURNEY_PLANS = {
+  all: [
+    {
+      step: "Tonight",
+      text: "Start with the first recommended session and let yourself stop choosing for a while.",
+    },
+    {
+      step: "If sleep still feels far away",
+      text: "Stay with one softer session instead of switching between many things or checking the time.",
+    },
+    {
+      step: "If this keeps repeating",
+      text: "Notice which kind of night comes back most often, then follow the matching member path.",
+    },
+  ],
+  overthinking: [
+    {
+      step: "Tonight",
+      text: "Begin with the recommended overthinking session before the mind builds more speed.",
+    },
+    {
+      step: "If your mind starts looping again",
+      text: "Do not go hunting for the perfect advice. Return to the same calmer voice and let repetition do part of the work.",
+    },
+    {
+      step: "If this is your usual bedtime pattern",
+      text: "The next step is 7 Nights for Overthinking, built for repeated mentally loud evenings.",
+    },
+  ],
+  "night-waking": [
+    {
+      step: "Tonight",
+      text: "Use the steadier back-to-sleep session with as little stimulation as possible around it.",
+    },
+    {
+      step: "If you wake again later",
+      text: "Avoid turning the night into a problem-solving session. Keep light low and choose the same calmer entry point.",
+    },
+    {
+      step: "If 2am or 3am waking is becoming a pattern",
+      text: "The next step is Back To Sleep at 3am, a member path built for repeat middle-of-the-night waking.",
+    },
+  ],
+  "world-nights": [
+    {
+      step: "Tonight",
+      text: "Start with atmosphere first and let the setting lower your guard before the guidance asks anything of you.",
+    },
+    {
+      step: "If you still feel restless",
+      text: "Stay with a softer world-night session rather than pushing yourself into a more effortful practice.",
+    },
+    {
+      step: "If atmosphere is what helps most",
+      text: "Keep following the world-night sessions and watch for a future longer-form collection.",
+    },
+  ],
 };
 
 function loadGa4() {
@@ -268,6 +328,24 @@ function updateJourneyContext() {
   }
 }
 
+function renderJourneyPlan() {
+  if (!journeyPlanGrid) {
+    return;
+  }
+
+  const plan = JOURNEY_PLANS[activeJourney] || JOURNEY_PLANS.all;
+  journeyPlanGrid.innerHTML = plan
+    .map((item) => {
+      return `
+        <article class="journey-plan-card">
+          <p class="journey-plan-step">${escapeHtml(item.step)}</p>
+          <p class="journey-plan-text">${escapeHtml(item.text)}</p>
+        </article>
+      `;
+    })
+    .join("");
+}
+
 function setupTimedAudioLoop(audio) {
   if (audio.dataset.loopBound === "true") {
     return;
@@ -431,6 +509,7 @@ function renderSessions(sessions) {
 
   updateHeroSession(normalizedSessions);
   updateJourneyContext();
+  renderJourneyPlan();
 
   const filteredSessions = normalizedSessions
     .filter((session) => {
