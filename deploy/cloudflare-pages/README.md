@@ -13,11 +13,7 @@ Recommended Cloudflare Pages setup:
 - Build output directory: deploy/cloudflare-pages
 
 Current bundles included:
-- 2026-03-19-still-waters-at-night-2
-- 2026-03-19-the-quiet-room
-- 2026-03-22-after-the-mind-lets-go-3
-- 2026-03-22-the-empty-boat-2
-- 2026-03-27-lanterns-after-rain-2
+- 2026-03-27-lanterns-after-rain
 
 Important:
 - Replace `hello@example.com` before public launch.

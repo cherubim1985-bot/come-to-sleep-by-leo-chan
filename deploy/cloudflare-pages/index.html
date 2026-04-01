@@ -34,30 +34,45 @@
       <main>
         <section class="hero">
           <div class="hero-copy">
-            <p class="eyebrow">A Calm Human Voice For Tender Nights</p>
-            <h1>When the night feels tender, you do not have to be alone in it.</h1>
+            <p class="eyebrow">Sleep Meditations For Tender Nights</p>
+            <h1>For the nights when your body is tired, but your heart is still awake.</h1>
             <p class="hero-text">
-              Sleep support for the moments when your body is tired, but your heart is still awake.
-              Through soft audio, gentle guidance, and quiet nighttime practices, Leo Chan helps the body feel safe enough to rest.
+              A voice-led sleep space for people who cannot simply switch off.
+              Leo Chan makes gentle nighttime sessions for overthinking, night waking, and emotionally full evenings.
             </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#library">Begin Gently</a>
-              <a class="button button-secondary" href="#contact">Stay Close To This Work</a>
+            <div class="hero-proof">
+              <span>Human voice, not generic wellness copy</span>
+              <span>Built for overthinking, night waking, and emotionally full evenings</span>
             </div>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#hero-session">Listen To Tonight's Session</a>
+              <a class="button button-secondary" href="#contact">Join The Sleep List</a>
+            </div>
+            <p class="hero-note">Start with one session tonight. Return for weekly drops and deeper themed series.</p>
           </div>
 
           <aside class="hero-media" id="hero-session">
-            <img id="hero-session-image" src="../output/2026-03-19-still-waters-at-night-2/cover.svg" alt="Still Waters At Night cover" />
+            <img id="hero-session-image" src="./output/2026-03-19-still-waters-at-night-2/cover.svg" alt="Still Waters At Night cover" />
             <div class="hero-media-copy">
               <p class="eyebrow">Tonight's Session</p>
               <h2 id="hero-session-title">Still Waters At Night</h2>
               <p id="hero-session-subtitle">A quieter way to soften into rest.</p>
               <audio id="hero-session-audio" controls preload="metadata" data-loop-window-seconds="7200">
-                <source id="hero-session-source" src="../output/2026-03-19-still-waters-at-night-2/voiceover.mp3" type="audio/mpeg" />
+                <source id="hero-session-source" src="./output/2026-03-19-still-waters-at-night-2/voiceover.mp3" type="audio/mpeg" />
               </audio>
             </div>
           </aside>
         </section>
+
+        
+
+        
+
+        
+
+        
+
+        
 
         <section class="section ritual-section" id="ritual">
           <div class="section-intro">
@@ -92,12 +107,38 @@
             <div class="portrait-placeholder">Leo Chan</div>
             <div class="about-copy">
               <p>
-                Leo Chan creates sleep meditations for people who need comfort, emotional quiet, and a gentler way to come back to rest.
+                Leo Chan creates sleep meditations for people who need comfort, emotional quiet, and a gentler return to rest.
               </p>
               <p>
-                This is not just a library of meditations. It is a softer, more personal kind of nighttime support for bedtime, night waking, and emotionally full evenings.
+                This is a quieter, more personal kind of nighttime support for bedtime, night waking, and emotionally full evenings.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section class="section problem-section" id="problem-paths">
+          <div class="section-intro">
+            <p class="eyebrow">Choose Tonight's Need</p>
+            <h2>What kind of night is this?</h2>
+            <p class="section-lead">Choose the closest fit, then start there.</p>
+          </div>
+          <div class="journey-picker" aria-label="Choose tonight's need">
+            <button class="journey-button active" data-journey="all">Start Anywhere</button>
+            <button class="journey-button" data-journey="overthinking">My mind won't stop</button>
+            <button class="journey-button" data-journey="night-waking">I woke up at 3am</button>
+            <button class="journey-button" data-journey="world-nights">I need softer atmosphere</button>
+          </div>
+          <div class="journey-context" id="journey-context">
+            <p class="journey-context-label">Start Here</p>
+            <h3 id="journey-context-title">Start anywhere.</h3>
+            <p class="journey-context-description" id="journey-context-description">
+              If you are not sure what you need, begin with the latest session and let your body tell you whether it wants softness, steadiness, or a little more space.
+            </p>
+            <p class="journey-context-note" id="journey-context-note">Member path coming soon: 7 Nights for Overthinking.</p>
+          </div>
+          <div class="journey-plan" id="journey-plan">
+            <p class="journey-plan-label">Tonight's Plan</p>
+            <div class="journey-plan-grid" id="journey-plan-grid"></div>
           </div>
         </section>
 
@@ -105,51 +146,129 @@
           <div class="section-head">
             <div class="section-intro">
               <p class="eyebrow">Library</p>
-              <h2>Browse the full collection</h2>
-            </div>
-            <div class="filter-group" aria-label="Content filters">
-              <button class="filter-button active" data-filter="all">All</button>
-              <button class="filter-button" data-filter="audio">Audio</button>
+              <h2>Start with one session that fits tonight</h2>
             </div>
           </div>
 
+          <div class="library-focus" id="library-focus" hidden></div>
           <div class="session-grid" id="session-grid"></div>
           <p class="library-status" id="library-status">Gathering the latest gentle sleep sessions...</p>
+        </section>
+
+        <section class="section how-section" id="how-it-works">
+          <div class="section-intro">
+            <p class="eyebrow">How This Works</p>
+            <h2>A gentler structure for nights that repeat</h2>
+            <p class="section-lead">This is not just a pile of audio. The idea is to help you start with tonight, then notice patterns, then choose the kind of support you need again tomorrow.</p>
+          </div>
+          <div class="how-grid">
+            <article class="how-card">
+              <span>01</span>
+              <h3>Start with tonight</h3>
+              <p>Choose the night that feels closest and begin with one session instead of searching through too many options.</p>
+            </article>
+            <article class="how-card">
+              <span>02</span>
+              <h3>Notice what repeats</h3>
+              <p>If the same kind of night keeps returning, treat it like a pattern, not a personal failure.</p>
+            </article>
+            <article class="how-card">
+              <span>03</span>
+              <h3>Follow a steadier path</h3>
+              <p>Member paths are meant for the nights that come back again and again, like bedtime overthinking or waking at 3am.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section membership-section" id="membership">
+          <div class="section-intro">
+            <p class="eyebrow">Membership</p>
+            <h2>If these nights return often, deeper guidance is on the way.</h2>
+            <p class="section-lead">The free library is here for tonight. Membership is for the patterns that keep coming back.</p>
+          </div>
+          <div class="membership-grid">
+            <article class="membership-card">
+              <p class="membership-tier">Free Library</p>
+              <h3>Start Here</h3>
+              <ul class="membership-list">
+                <li>Public sessions to help you settle tonight</li>
+                <li>A simple way to learn Leo's voice before committing</li>
+              </ul>
+            </article>
+            <article class="membership-card membership-card-featured">
+              <p class="membership-tier">Membership</p>
+              <h3>$8.99/month</h3>
+              <p class="membership-price-note">or $59/year when you want a steadier night path</p>
+              <ul class="membership-list">
+                <li>7 Nights for Overthinking</li>
+                <li>Back To Sleep at 3am</li>
+                <li>Longer sessions, loops, and member-only drops</li>
+              </ul>
+              <a class="button button-primary membership-button" href="mailto:hello@example.com?subject=Member%20Paths">Hear When The Paths Open</a>
+            </article>
+          </div>
+          <div class="membership-note">
+            <p>The first paid paths are meant for repeat patterns, not just more listening: overthinking before bed, and waking in the middle of the night and struggling to return to sleep.</p>
+          </div>
+          <div class="path-preview-grid">
+            <article class="path-preview-card">
+              <p class="membership-tier">First Path</p>
+              <h3>7 Nights for Overthinking</h3>
+              <p class="path-preview-copy">For people whose body is ready for bed, but whose mind keeps reopening the day.</p>
+              <ul class="membership-list">
+                <li>One guided session each night for a week</li>
+                <li>A gentler progression from mental noise into sleep</li>
+                <li>Made for bedtime overthinking, not daytime productivity</li>
+              </ul>
+            </article>
+            <article class="path-preview-card">
+              <p class="membership-tier">First Path</p>
+              <h3>Back To Sleep at 3am</h3>
+              <p class="path-preview-copy">For people who wake in the middle of the night and do not want to think, solve, or scroll.</p>
+              <ul class="membership-list">
+                <li>Shorter, lower-effort sessions for 2am and 3am waking</li>
+                <li>Steadier pacing with less stimulation and less instruction</li>
+                <li>Built to help you return to sleep, not start a new day</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section trust-section" id="extra-help">
+          <div class="section-intro">
+            <p class="eyebrow">A Quiet Note</p>
+            <h2>Support for ordinary hard nights, not a replacement for care</h2>
+          </div>
+          <div class="trust-grid">
+            <article class="trust-card">
+              <h3>What this is for</h3>
+              <p>Come To Sleep is for overthinking at bedtime, night waking, emotional heaviness, and the kind of nights when you want a calmer voice and a softer path back toward rest.</p>
+            </article>
+            <article class="trust-card">
+              <h3>When to seek extra help</h3>
+              <p>If sleep problems are happening most nights, harming your daytime life, or feeling tied to panic, depression, trauma, or physical symptoms, it is worth speaking with a doctor or sleep specialist too.</p>
+            </article>
+          </div>
         </section>
 
         <section class="section contact-section" id="contact">
           <div class="section-intro">
             <p class="eyebrow">Stay Close</p>
-            <h2>If this space brings comfort, there are gentler ways to go deeper.</h2>
+            <h2>If this voice helps at night, do not leave it to chance.</h2>
           </div>
           <div class="contact-card">
-            <p>
-              If Leo's voice feels like a place you can return to, this can become more than a single visit.
-              Over time, this space can open into longer guided series, deeper sleep support, and more personal ways to stay connected.
-            </p>
-            <div class="offer-grid">
-              <article class="offer-card">
-                <p class="offer-label">For Ongoing Support</p>
-                <h3>Membership Library</h3>
-                <p>Return for full-length sleep sessions, themed nighttime series, and a quieter rhythm of care.</p>
-              </article>
-              <article class="offer-card">
-                <p class="offer-label">For Deeper Care</p>
-                <h3>Private Support</h3>
-                <p>Explore one-to-one guidance, personal sleep support, or a more tailored space to rest and reset.</p>
-              </article>
-            </div>
+            <p>Join the sleep list for new free sessions. If the deeper paths matter to you, you can mention that too.</p>
             <div class="hero-actions">
-              <a class="button button-primary" href="mailto:hello@example.com">Stay Connected</a>
-              <a class="button button-secondary" href="#library">Listen First</a>
+              <a class="button button-primary" href="mailto:hello@example.com?subject=Join%20the%20Sleep%20List">Join The Sleep List</a>
+              <a class="button button-secondary" href="mailto:hello@example.com?subject=Member%20Paths">Ask About Member Paths</a>
             </div>
           </div>
         </section>
       </main>
     </div>
 
-    <script src="./site-config.js?v=20260328b"></script>
-    <script src="./sessions.js?v=20260328b"></script>
-    <script src="./app.js?v=20260328b"></script>
+    <script src="./site-config.js?v=20260329r"></script>
+    <script src="./sessions.js?v=20260329r"></script>
+    <script src="./app.js?v=20260329r"></script>
   </body>
 </html>

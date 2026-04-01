@@ -1,5 +1,33 @@
 [
   {
+    "name": "At the Orchard Gate",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A gentle spring night practice with blossom air, distant crickets, and a soft gate into sleep",
+    "music_tags": [
+      "sleep",
+      "night",
+      "spring",
+      "breeze",
+      "nature"
+    ],
+    "practice_preferences": [
+      "禅宗观照",
+      "身体扫描"
+    ],
+    "image_keywords": [
+      "moonlit orchard path",
+      "wooden garden gate",
+      "spring blossoms at night",
+      "soft silver breeze",
+      "quiet countryside darkness",
+      "no text or signage"
+    ],
+    "opening": "If the mind still feels half-open tonight, stay here with me and let this be the moment you stop standing at the gate of the day.",
+    "body_focus": "Feel the body resting as if the night air has finally reached you, and let each exhale be a small step through that gate into something simpler, quieter, and unforced.",
+    "closing": "If sleep is near, let it meet you like soft blossom air moving through a quiet orchard. If you are still awake, stay here a little longer and let the night keep opening."
+  },
+  {
     "name": "Lanterns After Rain",
     "category": "Sleep Meditation",
     "language": "en",
