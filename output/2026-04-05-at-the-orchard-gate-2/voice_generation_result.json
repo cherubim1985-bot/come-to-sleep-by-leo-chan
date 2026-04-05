@@ -1,0 +1,792 @@
+{
+  "provider": "volcengine_v1",
+  "status": "generated",
+  "request_payload": {
+    "chunk_count": 60,
+    "chunks": [
+      {
+        "index": 1,
+        "reqid": "ce02d870b106ed30450d5cbe75dbad72",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "15045",
+          "first_pkg": "773"
+        },
+        "text": "If the mind still feels half-open tonight, stay here with me and let this be the moment you stop standing at the gate of the day.",
+        "output_file": "segment_001.wav",
+        "pause_after_ms": 7200
+      },
+      {
+        "index": 2,
+        "reqid": "5288aa9fd362acc75778623b58d8c4d9",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12193",
+          "first_pkg": "551"
+        },
+        "text": "If the day is still clinging to you a little, that is all right. We do not have to pull it away all at once.",
+        "output_file": "segment_002.wav",
+        "pause_after_ms": 8600
+      },
+      {
+        "index": 3,
+        "reqid": "e4fd0eaf0b799f4474469767c8f98bb7",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "9262",
+          "first_pkg": "552"
+        },
+        "text": "Let this be quieter than a practice and more like company at the end of a long day.",
+        "output_file": "segment_003.wav",
+        "pause_after_ms": 9200
+      },
+      {
+        "index": 4,
+        "reqid": "a25c18cd89c0985bcf826b696d35f702",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "6885",
+          "first_pkg": "552"
+        },
+        "text": "There is nothing you need to prepare before rest is allowed to begin.",
+        "output_file": "segment_004.wav",
+        "pause_after_ms": 9000
+      },
+      {
+        "index": 5,
+        "reqid": "70d887831a602c1f705e812cf38bc329",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "15113",
+          "first_pkg": "441"
+        },
+        "text": "Feel the surface beneath you taking the weight of your head, your shoulders, your back, your hips, and your legs.",
+        "output_file": "segment_005.wav",
+        "pause_after_ms": 9000
+      },
+      {
+        "index": 6,
+        "reqid": "b4c5418c86e9659e98ec225765103346",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "22609",
+          "first_pkg": "551"
+        },
+        "text": "Feel the body resting as if the night air has finally reached you, and let each exhale be a small step through that gate into something simpler, quieter, and unforced.",
+        "output_file": "segment_006.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 7,
+        "reqid": "e3a63c76186d3db73939c0bd5fd09c18",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "16942",
+          "first_pkg": "441"
+        },
+        "text": "Let the throat be easy. Let the chest stop bracing. Let the belly loosen the way it does when you finally know you are alone and safe.",
+        "output_file": "segment_007.wav",
+        "pause_after_ms": 9600
+      },
+      {
+        "index": 8,
+        "reqid": "69a8fe887c0f8787155a263ac887d8ae",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12293",
+          "first_pkg": "552"
+        },
+        "text": "The tiny muscles around the eyes can soften now. The jaw can soften. The tongue can rest.",
+        "output_file": "segment_008.wav",
+        "pause_after_ms": 9600
+      },
+      {
+        "index": 9,
+        "reqid": "e0d4495f7cbdc645c69a3cd0c2189de2",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "8258",
+          "first_pkg": "663"
+        },
+        "text": "You do not have to do this well tonight. You only have to let yourself be here.",
+        "output_file": "segment_009.wav",
+        "pause_after_ms": 10200
+      },
+      {
+        "index": 10,
+        "reqid": "50c453523facf8bb739a0d70eafd9aec",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "13410",
+          "first_pkg": "551"
+        },
+        "text": "You do not need a technique to impress anyone here. A soft breath is enough. A longer exhale is enough.",
+        "output_file": "segment_010.wav",
+        "pause_after_ms": 11200
+      },
+      {
+        "index": 11,
+        "reqid": "774ab3743fd3e121bc8bf5b80d8c17c9",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "4892",
+          "first_pkg": "552"
+        },
+        "text": "A restless night can still become a gentle one.",
+        "output_file": "segment_011.wav",
+        "pause_after_ms": 9600
+      },
+      {
+        "index": 12,
+        "reqid": "be921c684c90b32931cfca86d27fdf9e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10055",
+          "first_pkg": "553"
+        },
+        "text": "Let the body feel heavier in the kindest way, not sinking, only being received.",
+        "output_file": "segment_012.wav",
+        "pause_after_ms": 12200
+      },
+      {
+        "index": 13,
+        "reqid": "e41723a43d61154e1c725305c6c91047",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "13064",
+          "first_pkg": "552"
+        },
+        "text": "For now, nothing needs to be changed. Let this moment be exactly as it is, and let that be enough.",
+        "output_file": "segment_013.wav",
+        "pause_after_ms": 11400
+      },
+      {
+        "index": 14,
+        "reqid": "db85c16a7d7f0e13ea17ff70e8bcbdb0",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10521",
+          "first_pkg": "662"
+        },
+        "text": "If it helps, think of the exhale as the part of the breath that knows the way home.",
+        "output_file": "segment_014.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 15,
+        "reqid": "e4e92956e20f95d49cabd327dd1ee66e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "5532",
+          "first_pkg": "662"
+        },
+        "text": "You are allowed to be tired without needing to explain why.",
+        "output_file": "segment_015.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 16,
+        "reqid": "7ac278da6d591aa15fd41b3233c918e6",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10679",
+          "first_pkg": "552"
+        },
+        "text": "Each time the breath leaves, let the shoulders drop by the smallest amount, like a room dimming at night.",
+        "output_file": "segment_016.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 17,
+        "reqid": "4738ea4f083e598322334a1352804234",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10877",
+          "first_pkg": "551"
+        },
+        "text": "Even now, the body may be unwinding in ways you do not have to notice to benefit from.",
+        "output_file": "segment_017.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 18,
+        "reqid": "8b61cdb526abbaf40743ce6e14a38014",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12477",
+          "first_pkg": "662"
+        },
+        "text": "It may help to imagine you are floating just below the surface of still water, held quietly from all sides.",
+        "output_file": "segment_018.wav",
+        "pause_after_ms": 12600
+      },
+      {
+        "index": 19,
+        "reqid": "d5ebd34167794972b59fd07e2a883f35",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11487",
+          "first_pkg": "551"
+        },
+        "text": "You do not have to chase away thought. Simply notice it, and let it pass without following it anywhere.",
+        "output_file": "segment_019.wav",
+        "pause_after_ms": 11600
+      },
+      {
+        "index": 20,
+        "reqid": "681f3f00ef9a2057caee9801405189ff",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11683",
+          "first_pkg": "662"
+        },
+        "text": "Nothing has to become perfect. It only has to become slightly easier than it was a moment ago.",
+        "output_file": "segment_020.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 21,
+        "reqid": "7535c1115cade1d10e70afa34c55ed67",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11492",
+          "first_pkg": "662"
+        },
+        "text": "If some feeling is still awake inside you, let it be there without turning it into a problem.",
+        "output_file": "segment_021.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 22,
+        "reqid": "59072c762e2e4d522225e6a8def316ea",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11913",
+          "first_pkg": "441"
+        },
+        "text": "If sleep comes before this recording ends, you do not need to keep me with you. You can leave my voice behind.",
+        "output_file": "segment_022.wav",
+        "pause_after_ms": 11000
+      },
+      {
+        "index": 23,
+        "reqid": "071f0d508889847dbfde824a27d0cb18",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12793",
+          "first_pkg": "551"
+        },
+        "text": "Take one unhurried breath in, and let the exhale be a little longer, as though the body is putting something down.",
+        "output_file": "segment_023.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 24,
+        "reqid": "515a8b575cffd1a16ef38d2accf056f3",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "7811",
+          "first_pkg": "552"
+        },
+        "text": "Nothing in you has to be solved before sleep can come closer.",
+        "output_file": "segment_024.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 25,
+        "reqid": "0fb48fee64ee5c97c2a596e7e0bc58bc",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11292",
+          "first_pkg": "1765"
+        },
+        "text": "The night does not need anything from you now except your willingness to be carried a little.",
+        "output_file": "segment_025.wav",
+        "pause_after_ms": 12600
+      },
+      {
+        "index": 26,
+        "reqid": "4cd687b94a4ebcc70427b9288c1f0a9e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10142",
+          "first_pkg": "562"
+        },
+        "text": "Let the next breath arrive on its own. You are not managing it. You are only meeting it.",
+        "output_file": "segment_026.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 27,
+        "reqid": "8646f381f32c1fa49fab74de04297c73",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "9742",
+          "first_pkg": "553"
+        },
+        "text": "If the mind is still talking, let it talk farther away. You do not need to answer it.",
+        "output_file": "segment_027.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 28,
+        "reqid": "86e916a7ba36437462f634705315a674",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "17496",
+          "first_pkg": "552"
+        },
+        "text": "Sit inwardly with the night the way you might sit beside a quiet window, not asking for anything, only keeping company.",
+        "output_file": "segment_028.wav",
+        "pause_after_ms": 11600
+      },
+      {
+        "index": 29,
+        "reqid": "5cdc6baab46670fa810144ea94021096",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "13293",
+          "first_pkg": "552"
+        },
+        "text": "You do not need a technique to impress anyone here. A soft breath is enough. A longer exhale is enough.",
+        "output_file": "segment_029.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 30,
+        "reqid": "8c11b15afbc10013da6130029f364293",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "5455",
+          "first_pkg": "772"
+        },
+        "text": "A restless night can still become a gentle one.",
+        "output_file": "segment_030.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 31,
+        "reqid": "3c69000cee3952f743feeda202abdaa6",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12527",
+          "first_pkg": "551"
+        },
+        "text": "Picture your thoughts drifting like distant lights seen from far away. They can remain there without reaching you.",
+        "output_file": "segment_031.wav",
+        "pause_after_ms": 12600
+      },
+      {
+        "index": 32,
+        "reqid": "e3f9736473d186fb0f07f20d6ce4ed36",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "9059",
+          "first_pkg": "662"
+        },
+        "text": "If it helps, think of the exhale as the part of the breath that knows the way home.",
+        "output_file": "segment_032.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 33,
+        "reqid": "3e78ae6add3aeef4456b209fd155607d",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "5596",
+          "first_pkg": "662"
+        },
+        "text": "You are allowed to be tired without needing to explain why.",
+        "output_file": "segment_033.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 34,
+        "reqid": "277c44ad82b8ecd8b0bfa3e841af5327",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "8335",
+          "first_pkg": "552"
+        },
+        "text": "You do not have to stay ahead of the night. You can let the night catch up to you.",
+        "output_file": "segment_034.wav",
+        "pause_after_ms": 11000
+      },
+      {
+        "index": 35,
+        "reqid": "a52e5893e9007ff8ad26133d9b8e1db3",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12007",
+          "first_pkg": "552"
+        },
+        "text": "Each time the breath leaves, let the shoulders drop by the smallest amount, like a room dimming at night.",
+        "output_file": "segment_035.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 36,
+        "reqid": "ca1af8293651a6f4d94816d4b87f2e00",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10264",
+          "first_pkg": "552"
+        },
+        "text": "Even now, the body may be unwinding in ways you do not have to notice to benefit from.",
+        "output_file": "segment_036.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 37,
+        "reqid": "4e75440552e9dcc550c6c99f7eb90cac",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11539",
+          "first_pkg": "552"
+        },
+        "text": "Picture your thoughts drifting like distant lights seen from far away. They can remain there without reaching you.",
+        "output_file": "segment_037.wav",
+        "pause_after_ms": 12600
+      },
+      {
+        "index": 38,
+        "reqid": "8428712f1a7c1d79a882122967aaac36",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "14049",
+          "first_pkg": "552"
+        },
+        "text": "Awake or half asleep, you can remain simple here, breathing, resting, letting the mind widen instead of tighten.",
+        "output_file": "segment_038.wav",
+        "pause_after_ms": 11600
+      },
+      {
+        "index": 39,
+        "reqid": "0308415189537670ce7e0914868c9e95",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "9975",
+          "first_pkg": "551"
+        },
+        "text": "Notice how the body may already be a little farther away from the day than when we began.",
+        "output_file": "segment_039.wav",
+        "pause_after_ms": 10400
+      },
+      {
+        "index": 40,
+        "reqid": "db9c461ace0f907b0b0b21b1bebdec05",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "14389",
+          "first_pkg": "551"
+        },
+        "text": "You do not need to check whether it is working. Checking wakes the mind back up. Let not knowing be part of the rest.",
+        "output_file": "segment_040.wav",
+        "pause_after_ms": 11800
+      },
+      {
+        "index": 41,
+        "reqid": "f655d3d34d83846e4e7f391e1b24837a",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11163",
+          "first_pkg": "772"
+        },
+        "text": "Nothing has to become perfect. It only has to become slightly easier than it was a moment ago.",
+        "output_file": "segment_041.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 42,
+        "reqid": "8d29168abd6fe21bf6b2ad4307478590",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12333",
+          "first_pkg": "552"
+        },
+        "text": "If some feeling is still awake inside you, let it be there without turning it into a problem.",
+        "output_file": "segment_042.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 43,
+        "reqid": "632647184463c85769325777ce455237",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12357",
+          "first_pkg": "552"
+        },
+        "text": "Take one unhurried breath in, and let the exhale be a little longer, as though the body is putting something down.",
+        "output_file": "segment_043.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 44,
+        "reqid": "896b61b9274f86eb6055e5e5060232e2",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "6316",
+          "first_pkg": "551"
+        },
+        "text": "Nothing in you has to be solved before sleep can come closer.",
+        "output_file": "segment_044.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 45,
+        "reqid": "a8836fe1faca1246239af32505d33c98",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11630",
+          "first_pkg": "552"
+        },
+        "text": "Let the next breath arrive on its own. You are not managing it. You are only meeting it.",
+        "output_file": "segment_045.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 46,
+        "reqid": "6aea9b58b11f710a3a49295cc66efc5f",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10257",
+          "first_pkg": "552"
+        },
+        "text": "If the mind is still talking, let it talk farther away. You do not need to answer it.",
+        "output_file": "segment_046.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 47,
+        "reqid": "3d8cbe43e5d518c470fe410352bb36bb",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "13291",
+          "first_pkg": "553"
+        },
+        "text": "You do not need a technique to impress anyone here. A soft breath is enough. A longer exhale is enough.",
+        "output_file": "segment_047.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 48,
+        "reqid": "e5143e8d60d4a98f76a959f013c394ca",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "5559",
+          "first_pkg": "551"
+        },
+        "text": "A restless night can still become a gentle one.",
+        "output_file": "segment_048.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 49,
+        "reqid": "7fdc448bae92122e1d13d55a58248715",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10618",
+          "first_pkg": "441"
+        },
+        "text": "If it helps, think of the exhale as the part of the breath that knows the way home.",
+        "output_file": "segment_049.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 50,
+        "reqid": "648616d7a41cb9770711c45f8357a5bb",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "5834",
+          "first_pkg": "552"
+        },
+        "text": "You are allowed to be tired without needing to explain why.",
+        "output_file": "segment_050.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 51,
+        "reqid": "80ed4dd48950a484ea031bdbc574693e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11167",
+          "first_pkg": "553"
+        },
+        "text": "Each time the breath leaves, let the shoulders drop by the smallest amount, like a room dimming at night.",
+        "output_file": "segment_051.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 52,
+        "reqid": "fe623c6fb5109a8328896bc68de555a7",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10346",
+          "first_pkg": "552"
+        },
+        "text": "Even now, the body may be unwinding in ways you do not have to notice to benefit from.",
+        "output_file": "segment_052.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 53,
+        "reqid": "b0b2feeb6ea2728099dff87ba9dca705",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10875",
+          "first_pkg": "663"
+        },
+        "text": "Nothing has to become perfect. It only has to become slightly easier than it was a moment ago.",
+        "output_file": "segment_053.wav",
+        "pause_after_ms": 10800
+      },
+      {
+        "index": 54,
+        "reqid": "7408d410207fb35ccfe26e66c038c3e6",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "12470",
+          "first_pkg": "556"
+        },
+        "text": "If some feeling is still awake inside you, let it be there without turning it into a problem.",
+        "output_file": "segment_054.wav",
+        "pause_after_ms": 9800
+      },
+      {
+        "index": 55,
+        "reqid": "52c1fa502ad03fabda891e0f69d75db1",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "8336",
+          "first_pkg": "662"
+        },
+        "text": "You do not have to stay ahead of the night. You can let the night catch up to you.",
+        "output_file": "segment_055.wav",
+        "pause_after_ms": 11200
+      },
+      {
+        "index": 56,
+        "reqid": "f76b5ad8231855a1d8b2ded087a5756e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11917",
+          "first_pkg": "551"
+        },
+        "text": "Sometimes the first gift of the night is not sleep itself, but the moment the body stops arguing with wakefulness.",
+        "output_file": "segment_056.wav",
+        "pause_after_ms": 11800
+      },
+      {
+        "index": 57,
+        "reqid": "604e7aaf77abfe4fa5c08608ae4498b3",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "9548",
+          "first_pkg": "552"
+        },
+        "text": "Now let the breaths become smaller, quieter, almost private.",
+        "output_file": "segment_057.wav",
+        "pause_after_ms": 12400
+      },
+      {
+        "index": 58,
+        "reqid": "f39cce471f7626ca2aea4c867e50267e",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "10450",
+          "first_pkg": "552"
+        },
+        "text": "If you notice my voice fading from your attention, that is a good thing. You can keep drifting.",
+        "output_file": "segment_058.wav",
+        "pause_after_ms": 13200
+      },
+      {
+        "index": 59,
+        "reqid": "777b524a03e450df9cf538ab46f8903d",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "22921",
+          "first_pkg": "551"
+        },
+        "text": "If sleep is near, let it meet you like soft blossom air moving through a quiet orchard. If you are still awake, stay here a little longer and let the night keep opening.",
+        "output_file": "segment_059.wav",
+        "pause_after_ms": 13800
+      },
+      {
+        "index": 60,
+        "reqid": "5a0d359543b3511edcefbe030f85a0d3",
+        "code": 3000,
+        "message": "Success",
+        "addition": {
+          "duration": "11489",
+          "first_pkg": "552"
+        },
+        "text": "Stay with the softness. Stay with the support beneath you. Let the rest of the night do the rest.",
+        "output_file": "segment_060.wav",
+        "pause_after_ms": 15000
+      }
+    ]
+  },
+  "output_file": "voiceover.wav",
+  "source_url": null,
+  "message": "已通过火山引擎 V1 克隆语音接口生成旁白，共 60 段。"
+}

@@ -2110,7 +2110,25 @@ def generate_voice_via_volcengine(bundle_dir: Path, config: dict, voice_request:
             source_url=None,
             message=f"已通过火山引擎 V1 克隆语音接口生成旁白，共 {len(chunks)} 段。",
         )
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, error.URLError, TimeoutError, json.JSONDecodeError, ValueError) as exc:
+    except subprocess.CalledProcessError as exc:
+        stderr = (exc.stderr or b"").decode("utf-8", errors="ignore").strip()
+        if exc.returncode == 6:
+            detail = "curl 无法解析远程主机，当前环境的 DNS / 外网不可用。"
+        elif exc.returncode == 7:
+            detail = "curl 无法连接远程主机，当前环境的外网连通性不可用。"
+        elif exc.returncode == 28:
+            detail = "请求远程 TTS 超时。"
+        else:
+            detail = stderr or str(exc)
+        return GeneratedAssetResult(
+            provider="volcengine_v1",
+            status="failed",
+            request_payload=payload,
+            output_file=None,
+            source_url=None,
+            message=f"火山引擎旁白生成失败：{detail}",
+        )
+    except (subprocess.TimeoutExpired, error.URLError, TimeoutError, json.JSONDecodeError, ValueError) as exc:
         return GeneratedAssetResult(
             provider="volcengine_v1",
             status="failed",
@@ -3185,6 +3203,9 @@ def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] |
     if not website_dir.exists():
         return None
 
+    json_path = website_dir / "sessions.json"
+    existing_payload = load_json(json_path, {})
+    existing_sessions = existing_payload.get("sessions", []) if isinstance(existing_payload.get("sessions"), list) else []
     bundle_dirs = sorted([path for path in (root / "output").iterdir() if path.is_dir()], reverse=True)
     sessions = []
     media_base_url = normalize_media_base_url(config)
@@ -3237,12 +3258,40 @@ def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] |
             }
         )
 
+    merged_sessions = sessions
+    if existing_sessions:
+        merged_sessions = list(existing_sessions)
+        title_to_index = {
+            str(item.get("title", "")).strip().lower(): index
+            for index, item in enumerate(merged_sessions)
+            if str(item.get("title", "")).strip()
+        }
+        for session in sessions:
+            normalized_title = str(session.get("title", "")).strip().lower()
+            if normalized_title and normalized_title in title_to_index:
+                merged_sessions[title_to_index[normalized_title]] = session
+            else:
+                merged_sessions.append(session)
+        deduped_sessions = []
+        seen_titles: set[str] = set()
+        for session in sorted(
+            merged_sessions,
+            key=lambda item: (str(item.get("date", "")), str(item.get("title", ""))),
+            reverse=True,
+        ):
+            normalized_title = str(session.get("title", "")).strip().lower()
+            if normalized_title and normalized_title in seen_titles:
+                continue
+            if normalized_title:
+                seen_titles.add(normalized_title)
+            deduped_sessions.append(session)
+        merged_sessions = deduped_sessions
+
     payload = {
         "updated_at": datetime.now().isoformat(timespec="seconds"),
-        "session_count": len(sessions),
-        "sessions": sessions,
+        "session_count": len(merged_sessions),
+        "sessions": merged_sessions,
     }
-    json_path = website_dir / "sessions.json"
     js_path = website_dir / "sessions.js"
     serialized = json.dumps(payload, ensure_ascii=False, indent=2)
     json_path.write_text(serialized + "\n", encoding="utf-8")

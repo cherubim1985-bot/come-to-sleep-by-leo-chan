@@ -27,6 +27,11 @@ echo "Creating commit: $COMMIT_MESSAGE"
 git -C "$ROOT_DIR" commit -m "$COMMIT_MESSAGE"
 
 echo "Pushing to GitHub..."
-git -C "$ROOT_DIR" push
+CURRENT_BRANCH="$(git -C "$ROOT_DIR" branch --show-current)"
+if [[ -n "$CURRENT_BRANCH" ]]; then
+  git -C "$ROOT_DIR" push origin "$CURRENT_BRANCH"
+else
+  git -C "$ROOT_DIR" push origin HEAD:main
+fi
 
 echo "Done. Cloudflare Pages will deploy automatically after the GitHub push."
