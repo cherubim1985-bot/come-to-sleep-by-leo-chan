@@ -1,7 +1,29 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-04-05T12:23:36",
-  "session_count": 7,
+  "updated_at": "2026-04-15T19:33:24",
+  "session_count": 8,
   "sessions": [
+    {
+      "slug": "2026-04-15-rain-garden-in-kyoto",
+      "date": "2026-04-15",
+      "title": "Rain Garden In Kyoto",
+      "subtitle": "A voice-only Kyoto rain garden practice with Zen observation, soft counting, and a slow body release",
+      "kind": "audio",
+      "kindLabel": "Audio Session",
+      "meta": "Sleep Meditation · Rainy Night Atmosphere",
+      "description": "A voice-only Kyoto rain garden practice with Zen observation, soft counting, and a slow body release Built around Body Scan, Breath Counting, Zen Observation, it is ideal for closing your eyes and easing gradually into rest.",
+      "mediaPath": "./output/2026-04-15-rain-garden-in-kyoto/voiceover.mp3",
+      "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-04-15-rain-garden-in-kyoto/voiceover.mp3",
+      "posterPath": "./output/2026-04-15-rain-garden-in-kyoto/2026-04-15-rain-garden-in-kyoto-image.png",
+      "publicPosterPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-04-15-rain-garden-in-kyoto/2026-04-15-rain-garden-in-kyoto-image.png",
+      "coverTheme": "warm-cover",
+      "series": "World Nights",
+      "seriesSlug": "world-nights",
+      "bestFor": [
+        "world-nights",
+        "overthinking"
+      ],
+      "bestForLabel": "Rainy atmosphere, busy mind"
+    },
     {
       "slug": "2026-04-05-at-the-orchard-gate-2",
       "date": "2026-04-05",
