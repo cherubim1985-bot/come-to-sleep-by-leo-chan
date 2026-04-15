@@ -1,5 +1,5 @@
 window.SESSION_LIBRARY = {
-  "updated_at": "2026-04-15T19:04:51",
+  "updated_at": "2026-04-15T19:33:24",
   "session_count": 8,
   "sessions": [
     {
@@ -13,8 +13,8 @@ window.SESSION_LIBRARY = {
       "description": "A voice-only Kyoto rain garden practice with Zen observation, soft counting, and a slow body release Built around Body Scan, Breath Counting, Zen Observation, it is ideal for closing your eyes and easing gradually into rest.",
       "mediaPath": "./output/2026-04-15-rain-garden-in-kyoto/voiceover.mp3",
       "publicMediaPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-04-15-rain-garden-in-kyoto/voiceover.mp3",
-      "posterPath": "./output/2026-04-15-rain-garden-in-kyoto/cover.svg",
-      "publicPosterPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-04-15-rain-garden-in-kyoto/cover.svg",
+      "posterPath": "./output/2026-04-15-rain-garden-in-kyoto/2026-04-15-rain-garden-in-kyoto-image.png",
+      "publicPosterPath": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev/2026-04-15-rain-garden-in-kyoto/2026-04-15-rain-garden-in-kyoto-image.png",
       "coverTheme": "warm-cover",
       "series": "World Nights",
       "seriesSlug": "world-nights",
