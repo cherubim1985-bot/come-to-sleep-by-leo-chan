@@ -128,6 +128,7 @@ DEFAULT_CONFIG = {
         "background": "opaque",
         "watermark": True,
         "output_format": "png",
+        "require_generated": False,
     },
     "publishing": {
         "media_base_url": "",
@@ -2068,6 +2069,18 @@ def maybe_generate_image(bundle_dir: Path, config: dict, image_request: dict) ->
     )
 
 
+def require_generated_image(config: dict, generated_image: GeneratedAssetResult) -> None:
+    image_config = config.get("image_generation", {}) if isinstance(config.get("image_generation", {}), dict) else {}
+    if not bool(image_config.get("require_generated", False)):
+        return
+    if generated_image.status == "generated" and generated_image.output_file:
+        return
+    provider = str(image_config.get("provider", "manual")).strip() or "manual"
+    raise RuntimeError(
+        f"Image generation is required but {provider} did not produce an image: {generated_image.message}"
+    )
+
+
 def resolve_theme_for_bundle(root: Path, bundle_dir: Path, themes: list[dict]) -> dict:
     script = load_json(bundle_dir / "script.json", {})
     manifest = load_json(bundle_dir / "bundle_manifest.json", {})
@@ -2103,6 +2116,7 @@ def refresh_bundle_image(root: Path, config: dict, bundle_name: str) -> tuple[Pa
 
     generated_image = maybe_generate_image(bundle_dir, config, image_request)
     write_image_generation_result(bundle_dir, generated_image)
+    require_generated_image(config, generated_image)
 
     manifest = load_json(bundle_dir / "bundle_manifest.json", {})
     if isinstance(manifest, dict):
@@ -2991,6 +3005,7 @@ def write_bundle(
     (bundle_dir / "cover.svg").write_text(cover_svg, encoding="utf-8")
     generated_image = maybe_generate_image(bundle_dir, config, image_request)
     write_image_generation_result(bundle_dir, generated_image)
+    require_generated_image(config, generated_image)
     generated_music = maybe_generate_music(bundle_dir, config, music_request)
     (bundle_dir / "music_generation_result.json").write_text(
         json.dumps(

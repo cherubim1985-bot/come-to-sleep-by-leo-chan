@@ -112,7 +112,8 @@
     "quality": "high",
     "background": "opaque",
     "watermark": true,
-    "output_format": "png"
+    "output_format": "png",
+    "require_generated": true
   },
   "publishing": {
     "media_base_url": "https://pub-295d6824d61a475586e432fe9e260d8e.r2.dev",
