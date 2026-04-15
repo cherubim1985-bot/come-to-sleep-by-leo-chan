@@ -603,6 +603,16 @@ def load_json_with_timeout(path: Path, fallback, timeout_seconds: int = 2):
         signal.signal(signal.SIGALRM, previous_handler)
 
 
+def load_image_local_config(root: Path) -> dict:
+    local_path = root / "config" / "image_local.json"
+    if not local_path.exists():
+        return {}
+    local_config = load_json(local_path, {})
+    if not isinstance(local_config, dict):
+        return {}
+    return {"image_generation": local_config}
+
+
 def ensure_workspace(root: Path) -> None:
     for name in ["config", "assets/music", "output", "state"]:
         (root / name).mkdir(parents=True, exist_ok=True)
@@ -3647,6 +3657,7 @@ def main() -> int:
 
     target_date = date.fromisoformat(args.date) if args.date else datetime.now().date()
     config = merge_dict(DEFAULT_CONFIG, load_json(root / "config" / "project_config.json", DEFAULT_CONFIG))
+    config = merge_dict(config, load_image_local_config(root))
     if args.image_only_bundle:
         bundle_dir, generated_image = refresh_bundle_image(root, config, args.image_only_bundle)
         print(f"Image bundle refreshed: {bundle_dir}")

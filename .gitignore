@@ -25,6 +25,7 @@ assets/music/
 
 tools/bin/
 config/r2_local.json
+config/image_local.json
 
 deploy/cloudflare-pages/
 deploy/cloudflare-pages-upload.zip

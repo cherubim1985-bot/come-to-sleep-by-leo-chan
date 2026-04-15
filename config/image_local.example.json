@@ -1,0 +1,16 @@
+{
+  "provider": "volcengine_cv",
+  "access_key_id": "YOUR_VOLCENGINE_IMAGE_AK",
+  "secret_access_key": "YOUR_VOLCENGINE_IMAGE_SK",
+  "sdk_path": "/absolute/path/to/volc-sdk",
+  "region": "cn-beijing",
+  "req_key": "high_aes_general_v20",
+  "model_version": "general_v2.0",
+  "model": "high_aes_general_v20",
+  "size": "1536x1024",
+  "quality": "high",
+  "background": "opaque",
+  "watermark": true,
+  "output_format": "png",
+  "require_generated": true
+}
