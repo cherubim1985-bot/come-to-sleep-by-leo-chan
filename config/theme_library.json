@@ -175,6 +175,71 @@
     "closing": "If sleep is near, let it arrive like winter light softening everything at once. If you are still awake, remain here a little longer in the hush and warmth."
   },
   {
+    "name": "Rain Garden in Kyoto",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A voice-only Kyoto rain garden practice with Zen observation, soft counting, and a slow body release",
+    "series": "World Nights",
+    "seriesSlug": "world-nights",
+    "bestFor": [
+      "world-nights",
+      "overthinking"
+    ],
+    "bestForLabel": "Rainy atmosphere, busy mind",
+    "music_tags": [
+      "sleep",
+      "night",
+      "rain",
+      "zen",
+      "soft"
+    ],
+    "practice_preferences": [
+      "Zen Observation",
+      "Breath Counting",
+      "Body Scan"
+    ],
+    "image_keywords": [
+      "Kyoto rain garden at night",
+      "wet stepping stones",
+      "dark maple leaves",
+      "wooden eaves with rain drops",
+      "warm shoji window glow",
+      "quiet Japanese courtyard",
+      "no text or signage"
+    ],
+    "opening": "If the day has followed you all the way into bed tonight, stay here with me and let the rain garden become quiet around you.",
+    "body_focus": "Feel the body resting indoors while the garden outside grows still, and let each breath fall softly, like rain disappearing into dark stone.",
+    "closing": "If sleep is near, let it arrive like the last drops leaving the leaves after rain. If you are still awake, stay with the garden a little longer and let nothing more be needed."
+  },
+  {
+    "name": "The House Has Gone Quiet",
+    "category": "Sleep Meditation",
+    "language": "en",
+    "subtitle": "A voice-only night practice for setting down responsibility after everyone and everything has settled",
+    "music_tags": [
+      "sleep",
+      "night",
+      "home",
+      "quiet",
+      "soft"
+    ],
+    "practice_preferences": [
+      "禅宗观照",
+      "身体扫描"
+    ],
+    "image_keywords": [
+      "quiet hallway at night",
+      "warm bedside lamp",
+      "folded blanket",
+      "dark window",
+      "sleeping house",
+      "no text or signage"
+    ],
+    "opening": "If you have been carrying the feeling that you still need to take care of everything, stay here with me and let the house be quiet for a while.",
+    "body_focus": "Feel the bed holding the work of your body, and let each breath be a small permission to stop checking, stop preparing, and simply be here.",
+    "closing": "If sleep is near, let it come like the last light going off in a peaceful home. If you are still awake, stay with this quiet and let nothing more be needed."
+  },
+  {
     "name": "夜间安睡",
     "category": "Sleep Meditation",
     "subtitle": "让心慢慢放下，让身体慢慢沉入安稳",

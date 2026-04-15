@@ -30,6 +30,13 @@ DEFAULT_CONFIG = {
     "duration_min_minutes": 15,
     "duration_max_minutes": 30,
     "script_style": "human_spoken",
+    "english_sleep_concept": {
+        "enabled": True,
+        "place_atmosphere": True,
+        "min_practices": 2,
+        "max_practices": 3,
+        "instruction_style": "subtle_companion",
+    },
     "caption_segment_seconds": 12,
     "chapter_minutes": 2,
     "voice_clone": {
@@ -390,6 +397,128 @@ MEDITATION_TRADITIONS = [
     },
 ]
 
+ENGLISH_SLEEP_PRACTICES = [
+    {
+        "name": "Body Scan",
+        "origin": "mindfulness-based relaxation",
+        "aliases": ["body scan", "身体扫描", "somatic scan"],
+        "tags": ["body", "relax", "sleep", "night", "home", "winter"],
+        "opening_lines": [
+            "Let attention move through the body slowly, not to fix anything, only to notice where the day is still being held.",
+            "Begin with the body, because the body often knows how to rest before the mind agrees.",
+        ],
+        "practice_lines": [
+            "The forehead can soften, the jaw can soften, the small space behind the eyes can become less busy.",
+            "Let awareness pass through the shoulders, chest, belly, hips, legs, and feet, leaving each place a little less guarded.",
+        ],
+        "integration_lines": [
+            "Let the whole body be one quiet shape now, held by the bed and no longer needing to perform being okay.",
+        ],
+    },
+    {
+        "name": "Breath Counting",
+        "origin": "counting breath practice",
+        "aliases": ["breath counting", "counting breath", "数息法", "counted breath"],
+        "tags": ["breath", "focus", "clarity", "overthinking", "zen"],
+        "opening_lines": [
+            "Give the mind one small, simple thing to do, just enough to stop it reaching for everything else.",
+            "If counting feels helpful, let the numbers be very soft, almost like footprints disappearing behind you.",
+        ],
+        "practice_lines": [
+            "Breathing in, breathing out, one. Then let the number go.",
+            "If you lose the count, nothing has gone wrong. Begin again at one, gently, as if returning to a familiar path.",
+        ],
+        "integration_lines": [
+            "Let the count fade when it wants to fade; it was only here to help the mind become quiet enough to drift.",
+        ],
+    },
+    {
+        "name": "Zen Observation",
+        "origin": "East Asian Zen practice",
+        "aliases": ["zen", "zen observation", "禅宗观照", "shikantaza", "open sitting"],
+        "tags": ["stillness", "focus", "clarity", "zen", "minimal", "quiet"],
+        "opening_lines": [
+            "For now, do not try to improve the moment. Let the moment be known, and let that be enough.",
+            "There is no need to chase stillness. Notice what is here, and let it pass without being followed.",
+        ],
+        "practice_lines": [
+            "A thought comes. A sound comes. A breath comes. Each one can appear and disappear without becoming your work.",
+            "Sit inwardly with the night the way you might sit beside a quiet window, not asking for anything.",
+        ],
+        "integration_lines": [
+            "Let awareness stay wide and simple, with nothing special to hold and nothing special to reject.",
+        ],
+    },
+    {
+        "name": "Loving-Kindness",
+        "origin": "metta practice",
+        "aliases": ["loving-kindness", "metta", "慈心观", "kindness"],
+        "tags": ["heart", "emotion", "healing", "tender", "warm"],
+        "opening_lines": [
+            "Bring a little warmth toward yourself, not as a task, only as a quieter way to be with this tired body.",
+            "Let the chest receive one kind sentence, even if only a small part of you believes it tonight.",
+        ],
+        "practice_lines": [
+            "You might say silently: may I be safe tonight, may I be softened, may I receive the rest I need.",
+            "If someone else is on your heart, let them be wished peace too, and then let them rest outside your hands.",
+        ],
+        "integration_lines": [
+            "Let kindness become very quiet now, like a low lamp left on in the heart.",
+        ],
+    },
+    {
+        "name": "Yoga Nidra Rotation",
+        "origin": "yoga nidra",
+        "aliases": ["yoga nidra", "瑜伽尼德拉", "rotation of consciousness", "deep rest"],
+        "tags": ["sleep", "deep", "body", "night", "rest"],
+        "opening_lines": [
+            "Let awareness move lightly from place to place, as if the body is being invited into deeper rest one room at a time.",
+            "You do not need to concentrate hard. Just touch each place with attention, then let it go.",
+        ],
+        "practice_lines": [
+            "Right hand, left hand, both hands resting. Right foot, left foot, both feet heavy and quiet.",
+            "Back of the body, front of the body, the whole body resting as one.",
+        ],
+        "integration_lines": [
+            "Let the rotation dissolve into a single sense of being held, with no part of you left outside the rest.",
+        ],
+    },
+    {
+        "name": "Open Awareness",
+        "origin": "open monitoring mindfulness",
+        "aliases": ["open awareness", "open monitoring", "choiceless awareness", "开放觉察"],
+        "tags": ["stillness", "space", "night", "quiet", "clarity"],
+        "opening_lines": [
+            "Let awareness become wider than any one thought, wide enough for breath, sound, body, and darkness to all be here.",
+            "Instead of narrowing down, allow the mind to open gently, the way night opens around a quiet landscape.",
+        ],
+        "practice_lines": [
+            "Notice the breath, and also the silence around the breath.",
+            "Notice the body, and also the space around the body. Nothing has to be chosen or pushed away.",
+        ],
+        "integration_lines": [
+            "Let everything become part of the same soft field, and let sleep come from that spaciousness if it wants to.",
+        ],
+    },
+    {
+        "name": "Slow Exhale",
+        "origin": "relaxation breathing",
+        "aliases": ["slow exhale", "long exhale", "4-7-8 呼吸", "breath release"],
+        "tags": ["breath", "relax", "sleep", "night", "soft"],
+        "opening_lines": [
+            "Let the exhale be the part of the breath that does less, releases more, and asks nothing from you.",
+            "No breath needs to be perfect; only let the out-breath become a little longer than the in-breath.",
+        ],
+        "practice_lines": [
+            "Breathe in gently, and breathe out as if the body is putting down a bag it has carried for too long.",
+            "If it feels comfortable, let the next exhale lengthen by one small beat.",
+        ],
+        "integration_lines": [
+            "Let the long exhale teach the nervous system that the day is over now.",
+        ],
+    },
+]
+
 
 @dataclass
 class AudioTrack:
@@ -564,6 +693,42 @@ def choose_meditation_traditions(theme: dict, duration_minutes: int) -> list[dic
     if len(selected) < desired_count:
         selected.extend(pick_deterministic_items(MEDITATION_TRADITIONS, desired_count - len(selected), theme.get("name", "")))
     return selected[:desired_count]
+
+
+def normalize_practice_preferences(theme: dict) -> set[str]:
+    values: set[str] = set()
+    for item in theme.get("practice_preferences", []):
+        text = str(item).strip()
+        if text:
+            values.add(text.lower())
+    return values
+
+
+def choose_english_sleep_practices(theme: dict, duration_minutes: int, config: dict | None = None) -> list[dict]:
+    concept = (config or {}).get("english_sleep_concept", {}) if isinstance((config or {}).get("english_sleep_concept", {}), dict) else {}
+    min_count = max(1, int(concept.get("min_practices", 2)))
+    max_count = max(min_count, int(concept.get("max_practices", 3)))
+    desired_count = min(max_count, max(min_count, 2 if duration_minutes < 22 else 3))
+    theme_tags = set(normalize_tags(theme.get("music_tags", [])))
+    preferred = normalize_practice_preferences(theme)
+    seed = f"{theme.get('name', '')}::{duration_minutes}::english-practices"
+    scored = []
+    for practice in ENGLISH_SLEEP_PRACTICES:
+        aliases = {str(alias).strip().lower() for alias in practice.get("aliases", [])}
+        tags = set(normalize_tags(practice.get("tags", [])))
+        overlap = len(theme_tags & tags)
+        preference_bonus = 4 if preferred & aliases else 0
+        digest = hashlib.sha256(f"{seed}::{practice['name']}".encode("utf-8")).hexdigest()
+        scored.append((overlap + preference_bonus, overlap, digest, practice))
+    scored.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
+    return [item[3] for item in scored[:desired_count]]
+
+
+def choose_practice_line(practice: dict, field: str, seed: str) -> str:
+    options = practice.get(field, [])
+    if not isinstance(options, list) or not options:
+        return ""
+    return choose_spoken_variant([str(item) for item in options], f"{seed}::{practice.get('name', '')}::{field}")
 
 
 def choose_spoken_variant(options: list[str], seed: str) -> str:
@@ -839,9 +1004,15 @@ def choose_music(root: Path, config: dict, theme: dict, target_date: date) -> Au
     return None
 
 
-def build_meditation_script(theme: dict, duration_minutes: int, target_date: date | None = None, script_style: str = "human_spoken") -> dict:
+def build_meditation_script(
+    theme: dict,
+    duration_minutes: int,
+    target_date: date | None = None,
+    script_style: str = "human_spoken",
+    config: dict | None = None,
+) -> dict:
     if str(theme.get("language", "")).strip().lower() == "en":
-        return build_english_sleep_script(theme, duration_minutes, target_date, script_style)
+        return build_english_sleep_script(theme, duration_minutes, target_date, script_style, config)
 
     traditions = choose_meditation_traditions(theme, duration_minutes)
     seed = f"{(target_date.isoformat() if target_date else 'na')}::{theme['name']}::{duration_minutes}"
@@ -979,6 +1150,7 @@ def build_english_sleep_script(
     duration_minutes: int,
     target_date: date | None = None,
     script_style: str = "human_spoken",
+    config: dict | None = None,
 ) -> dict:
     seed = f"{(target_date.isoformat() if target_date else 'na')}::{theme['name']}::{duration_minutes}::english"
     drift_cycles = max(8, duration_minutes // 2)
@@ -1048,9 +1220,35 @@ def build_english_sleep_script(
     selected_companion = choose_many(companion_lines, 4, "companion")
     rotating_breaths = choose_many(breath_lines, len(breath_lines), "breath")
     rotating_reassurance = choose_many(reassurance_lines, len(reassurance_lines), "reassurance")
-    practice_preferences = {str(item).strip().lower() for item in theme.get("practice_preferences", [])}
+    concept = (config or {}).get("english_sleep_concept", {}) if isinstance((config or {}).get("english_sleep_concept", {}), dict) else {}
+    concept_enabled = bool(concept.get("enabled", True))
+    selected_practices = choose_english_sleep_practices(theme, duration_minutes, config) if concept_enabled else []
+    practice_names = {str(item.get("name", "")).strip().lower() for item in selected_practices}
+    practice_openings = [
+        line for line in (
+            choose_practice_line(practice, "opening_lines", seed)
+            for practice in selected_practices
+        )
+        if line
+    ]
+    practice_lines = [
+        line for line in (
+            choose_practice_line(practice, "practice_lines", seed)
+            for practice in selected_practices
+        )
+        if line
+    ]
+    practice_integrations = [
+        line for line in (
+            choose_practice_line(practice, "integration_lines", seed)
+            for practice in selected_practices
+        )
+        if line
+    ]
+    practice_preferences = normalize_practice_preferences(theme)
     is_zen_theme = bool(
         {"禅宗观照", "zen", "zen sitting", "shikantaza"} & practice_preferences
+        or "zen observation" in practice_names
     )
     zen_lines = [
         "For now, nothing needs to be changed. Let this moment be exactly as it is, and let that be enough.",
@@ -1074,6 +1272,8 @@ def build_english_sleep_script(
 
     lines_with_pause.append((rotating_breaths[0], 11200))
     lines_with_pause.append((rotating_reassurance[0], 9600))
+    if practice_openings:
+        lines_with_pause.append((practice_openings[0], 11000))
     lines_with_pause.append((selected_imagery[0], 12200))
     if is_zen_theme:
         lines_with_pause.append((zen_lines[0], 11400))
@@ -1081,9 +1281,15 @@ def build_english_sleep_script(
     for index in range(drift_cycles):
         lines_with_pause.append((rotating_breaths[(index + 1) % len(rotating_breaths)], 10800))
         lines_with_pause.append((rotating_reassurance[(index + 1) % len(rotating_reassurance)], 9800))
+        if practice_lines and index in {0, 2, 5, 8}:
+            practice_index = min(index // 2, len(practice_lines) - 1)
+            lines_with_pause.append((practice_lines[practice_index], 11600))
         if index in {1, 3, 5, 7}:
             imagery_index = min(index // 2 + 1, len(selected_imagery) - 1)
             lines_with_pause.append((selected_imagery[imagery_index], 12600))
+        if practice_openings and index in {3, 7}:
+            practice_index = min(index // 4 + 1, len(practice_openings) - 1)
+            lines_with_pause.append((practice_openings[practice_index], 11200))
         if index in {2, 6}:
             companion_index = min(index // 2 - 1, len(selected_companion) - 1)
             lines_with_pause.append((selected_companion[companion_index], 11000))
@@ -1098,6 +1304,7 @@ def build_english_sleep_script(
         [
             (selected_companion[-2], 11200),
             (selected_companion[-1], 11800),
+            (practice_integrations[0], 11800) if practice_integrations else ("", 0),
             (closing_variants[0], 12400),
             (closing_variants[1], 13200),
             (theme["closing"], 13800),
@@ -1112,7 +1319,12 @@ def build_english_sleep_script(
         "subtitle": theme["subtitle"],
         "duration_minutes": duration_minutes,
         "script_style": script_style,
-        "traditions": [],
+        "traditions": [{"name": item["name"], "origin": item["origin"]} for item in selected_practices],
+        "concept": {
+            "place_atmosphere": bool(concept.get("place_atmosphere", True)),
+            "instruction_style": str(concept.get("instruction_style", "subtle_companion")),
+            "practice_blend": [item["name"] for item in selected_practices],
+        },
         "full_text": guidance,
         "spoken_blocks": spoken_blocks,
     }
@@ -2752,7 +2964,7 @@ def write_bundle(
     duration_minutes = forced_duration_minutes or choose_duration_minutes(config, target_date, theme)
     segment_seconds = int(config.get("caption_segment_seconds", 12))
     script_style = str(config.get("script_style", "human_spoken")).strip().lower()
-    script = build_meditation_script(theme, duration_minutes, target_date, script_style)
+    script = build_meditation_script(theme, duration_minutes, target_date, script_style, config)
     bundle_dir = next_output_dir(root, target_date, script["title"])
     bundle_dir.mkdir(parents=True, exist_ok=False)
 
@@ -2868,6 +3080,10 @@ def write_bundle(
         "image_generation_status": generated_image.status,
         "image_generation_message": generated_image.message,
         "category": theme.get("category", "Sleep Meditation"),
+        "series": str(theme.get("series", "")).strip() or None,
+        "seriesSlug": str(theme.get("seriesSlug", "")).strip() or None,
+        "bestFor": theme.get("bestFor", []) if isinstance(theme.get("bestFor", []), list) else [],
+        "bestForLabel": str(theme.get("bestForLabel", "")).strip() or None,
         "files": {
             "cover": generated_image.output_file or "cover.svg",
             "fallback_cover": "cover.svg",
@@ -3053,7 +3269,8 @@ def build_session_description(title: str, subtitle: str, traditions: list[dict],
 def build_promo_pack(script: dict, theme: dict, bundle_name: str) -> dict:
     title = str(script.get("title", "")).strip() or "Sleep Session"
     subtitle = str(script.get("subtitle", "")).strip()
-    description = build_session_description(title, subtitle, [], "audio", theme)
+    traditions = script.get("traditions", []) if isinstance(script.get("traditions"), list) else []
+    description = build_session_description(title, subtitle, traditions, "audio", theme)
     full_text = str(script.get("full_text", "")).strip()
     lines = [line.strip() for line in full_text.splitlines() if line.strip()]
     clip_quote = lines[0] if lines else subtitle
@@ -3240,23 +3457,34 @@ def sync_website_library(root: Path, config: dict, only_bundle_names: set[str] |
         elif "Sleep" in title:
             meta_parts.append("Sleep Relaxation")
 
-        sessions.append(
-            {
-                "slug": bundle_dir.name,
-                "date": bundle_dir.name[:10],
-                "title": title,
-                "subtitle": subtitle,
-                "kind": "audio",
-                "kindLabel": "Audio Session",
-                "meta": " · ".join(meta_parts),
-                "description": build_session_description(title, subtitle, [], "audio", manifest),
-                "mediaPath": f"../output/{bundle_dir.name}/{parse.quote(media_name)}",
-                "publicMediaPath": build_public_asset_url(media_base_url, bundle_dir.name, media_name),
-                "posterPath": f"../output/{bundle_dir.name}/{parse.quote(poster_name)}" if poster_name else None,
-                "publicPosterPath": build_public_asset_url(media_base_url, bundle_dir.name, poster_name),
-                "coverTheme": pick_cover_theme(title),
-            }
-        )
+        session = {
+            "slug": bundle_dir.name,
+            "date": bundle_dir.name[:10],
+            "title": title,
+            "subtitle": subtitle,
+            "kind": "audio",
+            "kindLabel": "Audio Session",
+            "meta": " · ".join(meta_parts),
+            "description": build_session_description(
+                title,
+                subtitle,
+                manifest.get("meditation_traditions", []) if isinstance(manifest.get("meditation_traditions"), list) else [],
+                "audio",
+                manifest,
+            ),
+            "mediaPath": f"../output/{bundle_dir.name}/{parse.quote(media_name)}",
+            "publicMediaPath": build_public_asset_url(media_base_url, bundle_dir.name, media_name),
+            "posterPath": f"../output/{bundle_dir.name}/{parse.quote(poster_name)}" if poster_name else None,
+            "publicPosterPath": build_public_asset_url(media_base_url, bundle_dir.name, poster_name),
+            "coverTheme": pick_cover_theme(title),
+        }
+        for key in ("series", "seriesSlug", "bestFor", "bestForLabel"):
+            value = manifest.get(key)
+            if isinstance(value, str) and value.strip():
+                session[key] = value.strip()
+            elif isinstance(value, list) and value:
+                session[key] = value
+        sessions.append(session)
 
     merged_sessions = sessions
     if existing_sessions:

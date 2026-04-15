@@ -5,6 +5,13 @@
   "duration_min_minutes": 15,
   "duration_max_minutes": 30,
   "script_style": "human_spoken",
+  "english_sleep_concept": {
+    "enabled": true,
+    "place_atmosphere": true,
+    "min_practices": 2,
+    "max_practices": 3,
+    "instruction_style": "subtle_companion"
+  },
   "caption_segment_seconds": 12,
   "chapter_minutes": 2,
   "voice_clone": {

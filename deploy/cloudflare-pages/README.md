@@ -14,6 +14,8 @@ Recommended Cloudflare Pages setup:
 
 Current bundles included:
 - 2026-03-27-lanterns-after-rain
+- 2026-04-05-at-the-orchard-gate-2
+- 2026-04-15-rain-garden-in-kyoto
 
 Important:
 - Replace `hello@example.com` before public launch.
