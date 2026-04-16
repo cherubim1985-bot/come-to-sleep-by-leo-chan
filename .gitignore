@@ -28,6 +28,14 @@ config/r2_local.json
 config/image_local.json
 
 deploy/cloudflare-pages/
+!deploy/cloudflare-pages/
+!deploy/cloudflare-pages/README.md
+!deploy/cloudflare-pages/app.js
+!deploy/cloudflare-pages/index.html
+!deploy/cloudflare-pages/sessions.js
+!deploy/cloudflare-pages/sessions.json
+!deploy/cloudflare-pages/site-config.js
+!deploy/cloudflare-pages/styles.css
 deploy/cloudflare-pages-upload.zip
 
 !deploy/netlify-site/output/
