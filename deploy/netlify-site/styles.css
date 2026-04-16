@@ -230,7 +230,7 @@ h3 {
 .contact-card,
 .ritual-grid article,
 .membership-card,
-.portrait-placeholder,
+.portrait-frame,
 .session-card {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
@@ -464,18 +464,25 @@ h3 {
   align-items: stretch;
 }
 
-.portrait-placeholder {
-  display: flex;
-  align-items: end;
-  justify-content: start;
+.portrait-frame {
   min-height: 260px;
-  padding: 18px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2rem;
-  color: var(--accent);
+  margin: 0;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 30% 20%, rgba(216, 187, 143, 0.14), transparent 24%),
+    radial-gradient(circle at 32% 18%, rgba(216, 187, 143, 0.16), transparent 24%),
     linear-gradient(160deg, #22344c, #132030 58%, #0d1521);
+}
+
+.portrait-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  object-fit: cover;
+  object-position: 50% 28%;
+  filter: saturate(0.86) contrast(0.94) brightness(0.9);
+  mix-blend-mode: screen;
+  opacity: 0.86;
 }
 
 .journey-button {

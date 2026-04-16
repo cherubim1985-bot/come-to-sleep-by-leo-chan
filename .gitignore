@@ -36,6 +36,8 @@ deploy/cloudflare-pages/
 !deploy/cloudflare-pages/sessions.json
 !deploy/cloudflare-pages/site-config.js
 !deploy/cloudflare-pages/styles.css
+!deploy/cloudflare-pages/assets/
+!deploy/cloudflare-pages/assets/**
 deploy/cloudflare-pages-upload.zip
 
 !deploy/netlify-site/output/
