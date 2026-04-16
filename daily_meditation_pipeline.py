@@ -3562,6 +3562,7 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
     sessions = payload.get("sessions", []) if isinstance(payload.get("sessions"), list) else []
     publishing = config.get("publishing", {}) if isinstance(config.get("publishing"), dict) else {}
     copy_media_to_deploy = bool(publishing.get("copy_media_to_deploy", True))
+    max_asset_bytes = int(publishing.get("max_deploy_asset_bytes", 25 * 1024 * 1024))
     media_base_url = normalize_media_base_url(config)
     deploy_dir = root / "deploy" / deploy_dir_name
     deploy_output_dir = deploy_dir / "output"
@@ -3577,6 +3578,7 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
             shutil.copy2(source, deploy_dir / filename)
 
     copied_bundles: set[str] = set()
+    skipped_assets: list[str] = []
     if copy_media_to_deploy:
         for session in sessions:
             media_path = str(session.get("mediaPath", "")).strip()
@@ -3592,6 +3594,9 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
                 bundle_target_dir.mkdir(parents=True, exist_ok=True)
                 source_file = root / "output" / bundle_name / parts[-1]
                 if source_file.exists():
+                    if source_file.stat().st_size > max_asset_bytes:
+                        skipped_assets.append(f"{bundle_name}/{parts[-1]}")
+                        continue
                     shutil.copy2(source_file, bundle_target_dir / parts[-1])
                     copied_bundles.add(bundle_name)
 
@@ -3603,6 +3608,7 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
                 encoding="utf-8",
             )
 
+    skipped_asset_lines = [f"- {asset}" for asset in sorted(skipped_assets)] if skipped_assets else ["- none"]
     readme_path = deploy_dir / "README.md"
     readme_path.write_text(
         "\n".join(
@@ -3616,6 +3622,7 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
                 f"- {hosting_name} should use this folder as the build output directory.",
                 f"- External media base URL: {media_base_url or 'not set'}",
                 f"- Copy media into deploy output: {'yes' if copy_media_to_deploy else 'no'}",
+                f"- Max copied asset size: {max_asset_bytes} bytes",
                 "",
                 f"Recommended {hosting_name} setup:",
                 "- Build command: leave empty",
@@ -3623,6 +3630,9 @@ def sync_static_publish_dir(root: Path, config: dict, deploy_dir_name: str, host
                 "",
                 "Current bundles included:",
                 *[f"- {bundle_name}" for bundle_name in sorted(copied_bundles)],
+                "",
+                "Assets skipped because the hosting platform rejects large files:",
+                *skipped_asset_lines,
                 "",
                 "Important:",
                 "- Replace `hello@example.com` before public launch.",
